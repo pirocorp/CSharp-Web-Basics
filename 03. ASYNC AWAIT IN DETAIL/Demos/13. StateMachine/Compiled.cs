@@ -12,7 +12,7 @@
 
             internal void ConsoleWriteLine()
             {
-                Console.WriteLine(input);
+                Console.WriteLine(this.input);
             }
         }
 
@@ -56,7 +56,7 @@
             public void MoveNext()
             {
                 // Set state to local variable for performance
-                int num = state;
+                int num = this.state;
                 try
                 {
                     // Variables to save awaiters for the new tasks
@@ -69,30 +69,30 @@
                         if (num == 1)
                         {
                             // We get the awaiter from the execution context again
-                            secondAwaiter = SecondAwaiter;
+                            secondAwaiter = this.SecondAwaiter;
 
                             // Set to null to release memory allocation
-                            SecondAwaiter = default;
+                            this.SecondAwaiter = default;
 
                             // Restart the state as we are about to finish
-                            num = (state = -1);
+                            num = (this.state = -1);
 
                             // Don't use goto unless you know what you are doing! :)
                             goto IL_0114;
                         }
 
                         // Execute first task with its context
-                        inputContext = new InputContext();
-                        inputContext.input = 5;
-                        firstAwaiter = Task.Run(inputContext.ConsoleWriteLine).GetAwaiter();
+                        this.inputContext = new InputContext();
+                        this.inputContext.input = 5;
+                        firstAwaiter = Task.Run(this.inputContext.ConsoleWriteLine).GetAwaiter();
 
                         // This block is for optimization in case the task is already finished (Task.FromResult)
                         // Most probably - this block will be executed
                         if (!firstAwaiter.IsCompleted)
                         {
-                            num = (state = 0);
+                            num = (this.state = 0);
                             // Save the awaiter for the next state.
-                            FirstAwaiter = firstAwaiter;
+                            this.FirstAwaiter = firstAwaiter;
                             TaskStateMachine stateMachine = this;
 
                             // This call to AwaitUnsafeOnCompleted is where most of the magic happens
@@ -103,18 +103,18 @@
                             // 2. Create an MoveNextAction using Execution context 
                             // 3. This MoveNextAction will call the MoveNext of state machine and provide execution context
                             // 4. Set MoveNextAction as callback to awaiter on complete Using awaiter.UnsafeOnCompleted(action)
-                            taskBuilder.AwaitUnsafeOnCompleted(ref firstAwaiter, ref stateMachine);
+                            this.taskBuilder.AwaitUnsafeOnCompleted(ref firstAwaiter, ref stateMachine);
                             return;
                         }
                     }
                     else
                     {
                         // Second time - we get the awaiter from the execution context
-                        firstAwaiter = FirstAwaiter;
+                        firstAwaiter = this.FirstAwaiter;
 
                         // Set to null to release memory allocation
-                        FirstAwaiter = default;
-                        num = (state = -1);
+                        this.FirstAwaiter = default;
+                        num = (this.state = -1);
                     }
 
                     firstAwaiter.GetResult();
@@ -127,33 +127,33 @@
                     // Again - for optimization
                     if (!secondAwaiter.IsCompleted)
                     {
-                        num = (state = 1);
+                        num = (this.state = 1);
                         // Save the awaiter for the next state.
-                        SecondAwaiter = secondAwaiter;
+                        this.SecondAwaiter = secondAwaiter;
                         TaskStateMachine stateMachine = this;
                         // Register the state machine to continue with the next state
-                        taskBuilder.AwaitUnsafeOnCompleted(ref secondAwaiter, ref stateMachine);
+                        this.taskBuilder.AwaitUnsafeOnCompleted(ref secondAwaiter, ref stateMachine);
                         return;
                     }
 
                     IL_0114:
                     // Finish by getting the awaiter result and execute the logic
-                    result = secondAwaiter.GetResult();
-                    Console.WriteLine(result);
+                    this.result = secondAwaiter.GetResult();
+                    Console.WriteLine(this.result);
                 }
                 catch (Exception exception)
                 {
                     // Exception handling mechanism
-                    state = -2;
-                    taskBuilder.SetException(exception);
+                    this.state = -2;
+                    this.taskBuilder.SetException(exception);
                     return;
                 }
 
                 // Set the state to final state we are done
-                state = -2;
+                this.state = -2;
 
                 // Set the result on the task builder
-                taskBuilder.SetResult();
+                this.taskBuilder.SetResult();
             }
 
             public void SetStateMachine(IAsyncStateMachine stateMachine)

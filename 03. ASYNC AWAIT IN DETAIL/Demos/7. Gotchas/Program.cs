@@ -8,7 +8,7 @@
     {
         public static async Task Main()
         {
-            RunAsyncVoid();
+             RunAsyncVoid();
             // AsyncVoidLambda(); // Remove the async and see.
 
             // await NestedTasks();
