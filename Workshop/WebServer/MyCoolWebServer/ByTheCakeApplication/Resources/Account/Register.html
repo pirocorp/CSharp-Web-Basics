@@ -1,0 +1,26 @@
+﻿<h2>Register</h2>
+
+<form method="post">
+    <label for="username">Name: </label>
+    <input required id="username" type="text" name="username" placeholder="Username" />
+
+    <br /> <!--Don't do that! Use CSS for presentation-->
+
+    <label for="password">Password: </label>
+    <input required type="password" id="password" name="password" placeholder="Password" />
+
+    <br /> <!--Don't do that! Use CSS for presentation-->
+
+    <label for="confirm-password">Confirm Password: </label>
+    <input required type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password" />
+
+    <br /> <!--Don't do that! Use CSS for presentation-->
+    <input type="submit" value="Register" />
+</form>
+
+<div style="display: {{{showError}}}; color: red;">
+    {{{error}}}
+</div>
+
+<br />
+<span>Already have an account? </span><a href="/login">Login here!</a>
