@@ -14,6 +14,7 @@
             this.StatusCode = statusCode;
             this.FileData = fileContent;
 
+            //this.Headers.Add(HttpHeader.ContentType, "image/x-icon");
             this.Headers.Add(HttpHeader.ContentLength, fileContent.Length.ToString());
             this.Headers.Add(HttpHeader.ContentDisposition, "attachment");
         }

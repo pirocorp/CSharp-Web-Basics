@@ -9,7 +9,6 @@
     using Controllers;
     using Helpers;
     using WebServer.Contracts;
-    using WebServer.Exceptions;
     using WebServer.Http.Contracts;
     using WebServer.Http.Response;
 
@@ -25,18 +24,15 @@
 
         public IHttpResponse Handle(IHttpRequest request)
         {
+            this._controllerInstance = null;
+            this._actionName = null;
+            this._methodParameters = null;
+
             this._getParameters = new Dictionary<string, string>(request.UrlParameters);
             this._postParameters = new Dictionary<string, string>(request.FormData);
             this._requestMethod = request.Method.ToString().ToUpper();
 
-            try
-            {
-                this.PrepareControllerAndActionNames(request);
-            }
-            catch (Exception e)
-            {
-                return new InternalServerErrorResponse(e);
-            }
+            this.PrepareControllerAndActionNames(request);
 
             var methodInfo = this.GetActionForExecution();
 
@@ -67,9 +63,19 @@
         {
             var pathParts = request.Path.Split(new []{'/', '?'}, StringSplitOptions.RemoveEmptyEntries);
 
-            if (pathParts.Length < 2)
+            if (pathParts.Length < 1)
             {
-                BadRequestException.ThrowFromInvalidRequest();
+                this._controllerName = MvcContext.Get.DefaultController;
+                this._actionName = MvcContext.Get.DefaultAction;
+
+                return;
+            }
+            else if (pathParts.Length < 2)
+            {
+                this._controllerName = $"{pathParts[0].Capitalize()}{MvcContext.Get.ControllersSuffix}";
+                this._actionName = MvcContext.Get.DefaultAction;
+
+                return;
             }
 
             this._controllerName = $"{pathParts[0].Capitalize()}{MvcContext.Get.ControllersSuffix}";
@@ -164,8 +170,17 @@
             {
                 var postParameterValue = this._postParameters[modelProperty.Name];
 
-                var value = Convert.ChangeType(postParameterValue, modelProperty.PropertyType);
-                modelProperty.SetValue(modelInstance, value);
+                try
+                {
+                    var value = Convert.ChangeType(postParameterValue, modelProperty.PropertyType);
+                    modelProperty.SetValue(modelInstance, value);
+                }
+                catch
+                {
+                    var type = modelProperty.PropertyType;
+                    var defaultValue = type.IsValueType ? Activator.CreateInstance(type) : null;
+                    modelProperty.SetValue(modelInstance, defaultValue);
+                }
             }
 
             this._methodParameters[index] = Convert.ChangeType(modelInstance, modelType);

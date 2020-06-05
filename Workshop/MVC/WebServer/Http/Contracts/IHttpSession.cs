@@ -12,6 +12,8 @@
 
         void Add(string key, object value);
 
+        void Remove(string key);
+
         void Clear();
     }
 }

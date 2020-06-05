@@ -4,6 +4,7 @@
     using System;
     using System.Net;
     using System.Net.Sockets;
+    using System.Net.WebSockets;
     using System.Threading.Tasks;
 
     public class WebServer : IRunnable
@@ -14,13 +15,15 @@
         private readonly IHandleable _requestHandler;
         private readonly IHandleable _resourceHandler;
         private readonly TcpListener _listener;
+
         private bool _isRunning;
 
         public WebServer(int port, IHandleable requestHandler, IHandleable resourceHandler)
         {
             this._port = port;
-            this._listener = new TcpListener(IPAddress.Parse(LOCAL_HOST_IP_ADDRESS), port);
-
+            //this._listener = new TcpListener(IPAddress.Parse(LOCAL_HOST_IP_ADDRESS), port);
+            this._listener = new TcpListener(IPAddress.Any, port);
+            
             this._requestHandler = requestHandler;
             this._resourceHandler = resourceHandler;
         }

@@ -14,6 +14,8 @@
             this.ViewsFolder = "Views";
             this.ModelsFolder = "Models";
             this.ResourcesFolder = "Resources";
+            this.DefaultController = "HomeController";
+            this.DefaultAction = "Index";
         }
 
         /// <summary>
@@ -33,5 +35,9 @@
         public string ModelsFolder { get; set; }
 
         public string ResourcesFolder { get; set; }
+
+        public string DefaultController { get; set; }
+
+        public string DefaultAction { get; set; }
     }
 }

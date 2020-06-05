@@ -78,10 +78,10 @@
 
         protected void SignOut()
         {
-            this.Request.Session.Clear();
+            this.Request.Session.Remove(SessionStore.CurrentUserKey);
         }
 
-        protected internal void InitializeController()
+        protected internal virtual void InitializeController()
         {
             var user = this.Request
                 .Session
