@@ -65,7 +65,7 @@
                         Email = u.Email,
                         Position = u.Position,
                         IsApproved = u.IsApproved,
-                        Posts = 0 // TODO: Implement
+                        Posts = u.Posts.Count
                     })
                     .ToList();
             }

@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ModePanel.App.Data;
 
 namespace ModePanel.App.Data.Migrations
 {
     [DbContext(typeof(ModePanelDbContext))]
-    partial class ModePanelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200608140112_PostsTable")]
+    partial class PostsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

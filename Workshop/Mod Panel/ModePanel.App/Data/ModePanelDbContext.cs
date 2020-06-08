@@ -6,6 +6,8 @@
     public class ModePanelDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+
+        public DbSet<Post> Posts { get; set; }
         
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
@@ -18,6 +20,12 @@
                 .Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
+
+            builder
+                .Entity<User>()
+                .HasMany(u => u.Posts)
+                .WithOne(p => p.User)
+                .HasForeignKey(p => p.UserId);
         }
     }
 }
