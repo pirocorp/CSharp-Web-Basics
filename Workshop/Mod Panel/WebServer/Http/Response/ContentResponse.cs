@@ -2,7 +2,6 @@
 {
     using Enums;
     using Exceptions;
-    using global::WebServer.Contracts;
 
     public class ContentResponse : HttpResponse
     {
