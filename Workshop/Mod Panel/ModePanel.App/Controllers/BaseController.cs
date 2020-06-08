@@ -4,6 +4,7 @@
 
     using Data;
     using Data.Models;
+    using SimpleMvc.Framework.Contracts;
     using SimpleMvc.Framework.Controllers;
 
     public abstract class BaseController : Controller
@@ -18,6 +19,8 @@
         }
 
         protected User Profile { get; private set; }
+
+        protected bool IsAdmin => this.User.IsAuthenticated && this.Profile.IsAdmin;
 
         protected void ShowError(string error)
         {
@@ -34,8 +37,6 @@
                 this.ViewModel["anonymousDisplay"] = "none";
                 this.ViewModel["userDisplay"] = "inherit";
 
-                bool isAdmin;
-
                 using (var db = new ModePanelDbContext())
                 {
                     this.Profile = db.Users
@@ -49,6 +50,9 @@
             }
         }
 
-        protected bool IsAdmin => this.User.IsAuthenticated && this.Profile.IsAdmin;
+        protected IActionResult RedirectToLogin()
+        {
+            return this.Redirect("/users/login");
+        }
     }
 }

@@ -1,10 +1,13 @@
 ﻿namespace ModePanel.App.Services
 {
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Contracts;
     using Data;
     using Data.Models;
+    using Models.Admin;
 
     public class UserService : IUserService
     {
@@ -49,6 +52,37 @@
 
             return db.Users
                 .Any(u => u.Email == email && u.IsApproved);
+        }
+
+        public IEnumerable<AdminUserModel> All()
+        {
+            using (var db = new ModePanelDbContext())
+            {
+                return db.Users
+                    .Select(u => new AdminUserModel
+                    {
+                        Id = u.Id,
+                        Email = u.Email,
+                        Position = u.Position,
+                        IsApproved = u.IsApproved,
+                        Posts = 0 // TODO: Implement
+                    })
+                    .ToList();
+            }
+        }
+
+        public void Approve(int id)
+        {
+            using (var db = new ModePanelDbContext())
+            {
+                var user = db.Users.Find(id);
+
+                if (user != null)
+                {
+                    user.IsApproved = true;
+                    db.SaveChanges();
+                }
+            }
         }
     }
 }
