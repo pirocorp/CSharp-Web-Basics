@@ -15,18 +15,25 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+            <a class="navbar-brand" href="/">Mod Panel</a>
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0" style="display: {{{adminDisplay}}}">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/admin/log">Log</a>
+                        <a class="dropdown-item" href="/admin/lposts">Posts</a>
+                        <a class="dropdown-item" href="/admin/users">Users</a>
+                    </div>
+                </li>
+            </ul>
             <div class="container">
-                <a class="navbar-brand" href="/">Mod Panel</a>
-
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-collapse" aria-controls="nav-collapse"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="nav-collapse">
-                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    </ul>
-                    <ul class="navbar-nav" style="display: {{{anonymousDisplay}}}">
+                    <ul class="navbar-nav ml-auto" style="display: {{{anonymousDisplay}}}">
                         <li class="nav-item active">
                             <a class="nav-link" href="/users/login">Login</a>
                         </li>
@@ -34,17 +41,7 @@
                             <a class="nav-link" href="/users/register">Register</a>
                         </li>
                     </ul>
-                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0" style="display: {{{adminDisplay}}}">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="/admin/log">Log</a>
-                                <a class="dropdown-item" href="/admin/lposts">Posts</a>
-                                <a class="dropdown-item" href="/admin/users">Users</a>
-                            </div>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav" style="display: {{{userDisplay}}}">
+                    <ul class="navbar-nav ml-auto" style="display: {{{userDisplay}}}">
                         <li class="navbar-nav">
                             <form class="form-inline my-2 my-lg-0">
                                 <input class="form-control mr-sm-2" type="text" name="q" placeholder="Search" aria-label="Search">

@@ -44,11 +44,10 @@
             }
 
             this.SignIn(model.Email);
-            return this.Redirect("/users/login");
+            return this.RedirectToLogin();
         }
 
-        public IActionResult Login()
-            => this.View();
+        public IActionResult Login() => this.View();
         
         [HttpPost]
         public IActionResult Login(LoginModel model)
@@ -72,13 +71,13 @@
             }
 
             this.SignIn(model.Email);
-            return this.Redirect("/");
+            return this.RedirectToHome();
         }
 
         public IActionResult Logout()
         {
             this.SignOut();
-            return this.Redirect("/");
+            return this.RedirectToHome();
         }
     }
 }

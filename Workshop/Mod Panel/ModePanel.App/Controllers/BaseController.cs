@@ -50,9 +50,8 @@
             }
         }
 
-        protected IActionResult RedirectToLogin()
-        {
-            return this.Redirect("/users/login");
-        }
+        protected IActionResult RedirectToLogin() => this.Redirect("/users/login");
+
+        protected IActionResult RedirectToHome() => this.Redirect("/");
     }
 }
