@@ -122,5 +122,38 @@
 
             return this.Redirect("/admin/posts");
         }
+
+        public IActionResult Delete(int id)
+        {
+            if (!this.IsAdmin)
+            {
+                return this.RedirectToLogin();
+            }
+
+            var post = this._postService.GetById(id);
+
+            if (post == null)
+            {
+                return this.NotFound();
+            }
+
+            this.ViewModel["title"] = post.Title;
+            this.ViewModel["content"] = post.Content;
+            this.ViewModel["id"] = id.ToString();
+
+            return this.View();
+        }
+
+        [HttpPost]
+        public IActionResult Confirm(int id)
+        {
+            if (!this.IsAdmin)
+            {
+                return this.RedirectToLogin();
+            }
+
+            this._postService.Delete(id);
+            return this.Redirect("/admin/posts");
+        }
     }
 }

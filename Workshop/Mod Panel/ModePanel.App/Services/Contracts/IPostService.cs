@@ -12,5 +12,7 @@
         PostModel GetById(int id);
 
         void Update(int id, string title, string content);
+
+        void Delete(int id);
     }
 }

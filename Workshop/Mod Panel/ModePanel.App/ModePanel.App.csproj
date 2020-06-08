@@ -18,6 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Views\Admin\Delete.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Views\Admin\Edit.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

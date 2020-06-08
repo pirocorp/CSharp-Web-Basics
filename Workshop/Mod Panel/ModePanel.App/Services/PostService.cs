@@ -72,5 +72,21 @@
                 db.SaveChanges();
             }
         }
+
+        public void Delete(int id)
+        {
+            using (var db = new ModePanelDbContext())
+            {
+                var post = db.Posts.Find(id);
+
+                if (post == null)
+                {
+                    return;
+                }
+
+                db.Posts.Remove(post);
+                db.SaveChanges();
+            }
+        }
     }
 }
