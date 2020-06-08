@@ -8,4 +8,10 @@
     <ProjectReference Include="..\WebServer\WebServer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Errors\Error.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

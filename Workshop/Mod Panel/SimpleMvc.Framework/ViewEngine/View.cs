@@ -13,7 +13,7 @@
 
         public const string FileExtension = ".html";
 
-        public const string LocalErrorPath = "\\SimpleMvc.Framework\\Errors\\Error.html";
+        public const string LocalErrorPath = "./Errors/Error.html";
 
         private readonly string templateFullQualifiedName;
 
@@ -80,7 +80,9 @@
             var parentDirectory = Directory.GetParent(currentDirectory);
             var parentDirectoryPath = parentDirectory.FullName;
 
-            return $"{parentDirectoryPath}{LocalErrorPath}";
+            //return $"{parentDirectoryPath}{LocalErrorPath}";
+
+            return LocalErrorPath;
         }
 
         private string GetErrorHtml()

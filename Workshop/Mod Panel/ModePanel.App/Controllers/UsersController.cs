@@ -33,7 +33,8 @@
 
             var result = this._userService.Create(
                 model.Email, 
-                model.Password);
+                model.Password,
+                model.PositionType());
 
             if (!result)
             {

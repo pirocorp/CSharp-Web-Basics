@@ -8,7 +8,7 @@
 
     public class UserService : IUserService
     {
-        public bool Create(string email, string password)
+        public bool Create(string email, string password, PositionType position)
         {
             using (var db = new ModePanelDbContext())
             {
@@ -23,7 +23,8 @@
                 {
                     Email = email,
                     Password = password,
-                    IsAdmin = isAdmin
+                    IsAdmin = isAdmin,
+                    Position = position,
                 };
 
                 db.Users.Add(user);
