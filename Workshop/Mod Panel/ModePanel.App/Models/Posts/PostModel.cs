@@ -3,7 +3,7 @@
     using Infrastructure;
     using Infrastructure.Validation.Posts;
 
-    public class CreatePostModel
+    public class PostModel
     {
         [Title]
         [Required]

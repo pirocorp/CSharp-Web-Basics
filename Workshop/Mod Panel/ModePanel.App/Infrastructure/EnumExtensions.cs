@@ -3,7 +3,7 @@
     using System;
     using Data.Models;
 
-    public static class EnumHelpers
+    public static class EnumExtensions
     {
         public static string ToFriendlyName(this PositionType position)
         {

@@ -28,7 +28,7 @@
         }
 
         [HttpPost]
-        public IActionResult Create(CreatePostModel model)
+        public IActionResult Create(PostModel model)
         {
             if (!this.User.IsAuthenticated)
             {
@@ -38,6 +38,7 @@
             if (!this.IsValidModel(model))
             {
                 this.ShowError(CREATE_ERROR);
+                return this.View();
             }
 
             this._postService
