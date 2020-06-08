@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using Data.Models;
     using Infrastructure;
     using Models.Posts;
     using Services;
@@ -15,11 +16,13 @@
 
         private readonly IUserService _userService;
         private readonly IPostService _postService;
+        private readonly ILogService _logService;
 
         public AdminController()
         {
             this._userService = new UserService();
             this._postService = new PostService();
+            this._logService = new LogService();
         }
 
         public IActionResult Users()
@@ -45,6 +48,8 @@
             var result = string.Join(Environment.NewLine, rows);
             this.ViewModel["users"] = result;
 
+            this.Log(LogType.OpenMenu, nameof(this.Users));
+
             return this.View();
         }
 
@@ -55,7 +60,9 @@
                 return this.RedirectToLogin();
             }
 
-            this._userService.Approve(id);
+            var userEmail = this._userService.Approve(id);
+            this.Log(LogType.UserApproval, userEmail);
+
             return this.Redirect("/admin/users");
         }
 
@@ -80,6 +87,8 @@
             
             var result = string.Join(Environment.NewLine, rows);
             this.ViewModel["posts"] = result;
+
+            this.Log(LogType.OpenMenu, nameof(this.Posts));
 
             return this.View();
         }
@@ -119,6 +128,7 @@
             }
 
             this._postService.Update(id, model.Title, model.Content);
+            this.Log(LogType.EditPost, model.Title);
 
             return this.Redirect("/admin/posts");
         }
@@ -152,8 +162,33 @@
                 return this.RedirectToLogin();
             }
 
-            this._postService.Delete(id);
+            var postTitle = this._postService.Delete(id);
+            
+            if (postTitle != null)
+            {
+                this.Log(LogType.DeletePost, postTitle);
+            }
+            
             return this.Redirect("/admin/posts");
+        }
+
+        public IActionResult Log()
+        {
+            var rows = this._logService
+                .All()
+                .Select(l => $@"
+                    <div class=""card border-{l.Type.ToViewClassName()} mb-1"">
+                        <div class=""card-body"">
+                            <p class=""card-text"">{l}</p>
+                        </div>
+                    </div>");
+
+
+             this.ViewModel["logs"] = string.Join(string.Empty, rows);
+
+            this.Log(LogType.OpenMenu, nameof(this.Log));
+
+            return this.View();
         }
     }
 }

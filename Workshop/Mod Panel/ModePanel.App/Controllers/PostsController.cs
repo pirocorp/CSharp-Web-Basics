@@ -1,5 +1,6 @@
 ﻿namespace ModePanel.App.Controllers
 {
+    using Data.Models;
     using Models.Posts;
     using Services;
     using Services.Contracts;
@@ -45,6 +46,11 @@
                 .Create(model.Title, 
                     model.Content,
                     this.Profile.Id);
+
+            if (this.IsAdmin)
+            {
+                this.Log(LogType.CreatePost, model.Title);
+            }
 
             return this.RedirectToHome();
         }

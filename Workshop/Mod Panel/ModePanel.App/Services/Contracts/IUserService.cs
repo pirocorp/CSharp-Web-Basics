@@ -14,6 +14,6 @@
 
         IEnumerable<AdminUserModel> All();
 
-        void Approve(int id);
+        string Approve(int id);
     }
 }

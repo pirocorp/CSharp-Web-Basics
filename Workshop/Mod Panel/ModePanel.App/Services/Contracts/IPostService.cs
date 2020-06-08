@@ -13,6 +13,6 @@
 
         void Update(int id, string title, string content);
 
-        void Delete(int id);
+        string Delete(int id);
     }
 }

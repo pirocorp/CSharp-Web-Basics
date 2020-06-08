@@ -4,11 +4,15 @@
 
     using Data;
     using Data.Models;
+    using Services;
+    using Services.Contracts;
     using SimpleMvc.Framework.Contracts;
     using SimpleMvc.Framework.Controllers;
 
     public abstract class BaseController : Controller
     {
+        private readonly ILogService _logService;
+
         protected BaseController()
         {
             this.ViewModel["show-error"] = "none";
@@ -16,6 +20,8 @@
             this.ViewModel["anonymousDisplay"] = "inherit";
             this.ViewModel["userDisplay"] = "none";
             this.ViewModel["adminDisplay"] = "none";
+
+            this._logService = new LogService();
         }
 
         protected User Profile { get; private set; }
@@ -53,5 +59,8 @@
         protected IActionResult RedirectToLogin() => this.Redirect("/users/login");
 
         protected IActionResult RedirectToHome() => this.Redirect("/");
+
+        protected void Log(LogType type, string additionalInfo)
+            => this._logService.Create(this.Profile.Email, type, additionalInfo);
     }
 }

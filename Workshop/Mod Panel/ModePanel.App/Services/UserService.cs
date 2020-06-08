@@ -71,7 +71,7 @@
             }
         }
 
-        public void Approve(int id)
+        public string Approve(int id)
         {
             using (var db = new ModePanelDbContext())
             {
@@ -82,6 +82,8 @@
                     user.IsApproved = true;
                     db.SaveChanges();
                 }
+
+                return user?.Email;
             }
         }
     }

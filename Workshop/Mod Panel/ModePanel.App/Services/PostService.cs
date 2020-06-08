@@ -73,7 +73,7 @@
             }
         }
 
-        public void Delete(int id)
+        public string Delete(int id)
         {
             using (var db = new ModePanelDbContext())
             {
@@ -81,11 +81,13 @@
 
                 if (post == null)
                 {
-                    return;
+                    return null;
                 }
 
                 db.Posts.Remove(post);
                 db.SaveChanges();
+
+                return post.Title;
             }
         }
     }
