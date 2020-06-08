@@ -3,7 +3,7 @@
     using SimpleMvc.Framework.Contracts;
     using SimpleMvc.Framework.Controllers;
 
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         public IActionResult Index()
         {
