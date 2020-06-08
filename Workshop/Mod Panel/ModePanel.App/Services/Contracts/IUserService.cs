@@ -7,5 +7,7 @@
         bool Create(string email, string password, PositionType position);
 
         bool Exists(string email, string password);
+
+        bool UserIsApproved(string modelEmail);
     }
 }

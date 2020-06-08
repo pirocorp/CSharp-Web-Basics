@@ -23,8 +23,9 @@
                 {
                     Email = email,
                     Password = password,
-                    IsAdmin = isAdmin,
                     Position = position,
+                    IsAdmin = isAdmin,
+                    IsApproved = isAdmin
                 };
 
                 db.Users.Add(user);
@@ -40,6 +41,14 @@
 
             return db.Users
                 .Any(u => u.Email == email && u.Password == password);
+        }
+
+        public bool UserIsApproved(string email)
+        {
+            using var db = new ModePanelDbContext();
+
+            return db.Users
+                .Any(u => u.Email == email && u.IsApproved);
         }
     }
 }

@@ -11,6 +11,7 @@
         private const string REGISTER_ERROR = "<p>Check your form for errors</p><p>Email – must contain @ sign and a period. It must be unique</p><p>Password – must be at least 6 symbols and must contain at least 1 uppercase, 1 lowercase letter and 1 digit</p><p>Confirm Password – must match the provided password</p>";
         private const string EMAIL_EXISTS_ERROR = "<p>E-mails is already taken.</p>";
         private const string LOGIN_ERROR = "<p>Invalid credentials.</p>";
+        private const string USER_IS_NOT_APPROVED_ERROR = "You must wait for your registration to be approved!";
 
         private readonly IUserService _userService;
 
@@ -55,6 +56,12 @@
             if (!this.IsValidModel(model))
             {
                 this.ShowError(LOGIN_ERROR);
+                return this.View();
+            }
+
+            if (!this._userService.UserIsApproved(model.Email))
+            {
+                this.ShowError(USER_IS_NOT_APPROVED_ERROR);
                 return this.View();
             }
 
