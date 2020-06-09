@@ -5,41 +5,39 @@
     using Contracts;
     using Data;
     using Data.Models;
-    using Models.Admin;
     using Models.Logs;
 
     public class LogService : ILogService
     {
+        private readonly ModePanelDbContext _db;
+
+        public LogService(ModePanelDbContext db)
+        {
+            this._db = db;
+        }
+
         public void Create(string admin, LogType type, string additionalInfo)
         {
-            using (var db = new ModePanelDbContext())
+            var log = new Log()
             {
-                var log = new Log()
-                {
-                    Admin = admin,
-                    Type = type,
-                    AdditionalInformation = additionalInfo
-                };
+                Admin = admin,
+                Type = type,
+                AdditionalInformation = additionalInfo
+            };
 
-                db.Logs.Add(log);
-                db.SaveChanges();
-            }
+            this._db.Logs.Add(log);
+            this._db.SaveChanges();
         }
 
         public IEnumerable<LogModel> All()
-        {
-            using (var db = new ModePanelDbContext())
-            {
-                return db.Logs
-                    .OrderByDescending(l => l.Id)
-                    .Select(l => new LogModel()
-                    {
-                        Admin = l.Admin,
-                        Type = l.Type,
-                        AdditionalInformation = l.AdditionalInformation
-                    })
-                    .ToList();
-            }
-        }
+            => this._db.Logs
+                .OrderByDescending(l => l.Id)
+                .Select(l => new LogModel()
+                {
+                    Admin = l.Admin,
+                    Type = l.Type,
+                    AdditionalInformation = l.AdditionalInformation
+                })
+                .ToList();
     }
 }

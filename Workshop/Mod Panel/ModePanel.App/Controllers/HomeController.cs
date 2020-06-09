@@ -3,19 +3,17 @@
     using System;
     using System.Linq;
     using Infrastructure;
-    using Services;
     using Services.Contracts;
     using SimpleMvc.Framework.Contracts;
 
     public class HomeController : BaseController
     {
-        private readonly ILogService _logService;
         private readonly IPostService _postService;
 
-        public HomeController()
+        public HomeController(ILogService logService, IPostService postService) 
+            : base(logService)
         {
-            this._logService = new LogService();    
-            this._postService = new PostService();
+            this._postService = postService;
         }
 
         public IActionResult Index()
@@ -65,7 +63,7 @@
                     this.ViewModel["authenticatedDisplay"] = "none";
                     this.ViewModel["adminDisplay"] = "flex";
 
-                    var logsResult = this._logService
+                    var logsResult = this.logService
                         .All()
                         .Select(l => l.ToHtml());
 

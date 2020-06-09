@@ -8,18 +8,18 @@
 
     public class HttpCookieCollection : IHttpCookieCollection
     {
-        private readonly IDictionary<string, HttpCookie> cookies;
+        private readonly IDictionary<string, HttpCookie> _cookies;
 
         public HttpCookieCollection()
         {
-            this.cookies = new Dictionary<string, HttpCookie>();
+            this._cookies = new Dictionary<string, HttpCookie>();
         }
 
         public void Add(HttpCookie cookie)
         {
             CoreValidator.ThrowIfNull(cookie, nameof(cookie));
 
-            this.cookies[cookie.Key] = cookie;
+            this._cookies[cookie.Key] = cookie;
         }
 
         public void Add(string key, string value)
@@ -34,25 +34,25 @@
         {
             CoreValidator.ThrowIfNull(key, nameof(key));
 
-            return this.cookies.ContainsKey(key);
+            return this._cookies.ContainsKey(key);
         }
 
         public IEnumerator<HttpCookie> GetEnumerator()
-            => this.cookies.Values.GetEnumerator();
+            => this._cookies.Values.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator()
-            => this.cookies.Values.GetEnumerator();
+            => this._cookies.Values.GetEnumerator();
 
         public HttpCookie Get(string key)
         {
             CoreValidator.ThrowIfNull(key, nameof(key));
 
-            if (!this.cookies.ContainsKey(key))
+            if (!this._cookies.ContainsKey(key))
             {
                 throw new InvalidOperationException($"The given key {key} is not present in the cookies collection.");
             }
 
-            return this.cookies[key];
+            return this._cookies[key];
         }
     }
 }

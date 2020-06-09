@@ -15,23 +15,23 @@
 
         public const string LocalErrorPath = "./Errors/Error.html";
 
-        private readonly string templateFullQualifiedName;
+        private readonly string _templateFullQualifiedName;
 
-        private readonly IDictionary<string, string> viewData;
+        private readonly IDictionary<string, string> _viewData;
 
         public View(string templateFullQualifiedName, IDictionary<string, string> viewData)
         {
-            this.templateFullQualifiedName = templateFullQualifiedName;
-            this.viewData = viewData;
+            this._templateFullQualifiedName = templateFullQualifiedName;
+            this._viewData = viewData;
         }
 
         public string Render()
         {
             var fileHtml = this.ReadFile();
 
-            if (this.viewData.Any())
+            if (this._viewData.Any())
             {
-                foreach (var data in this.viewData)
+                foreach (var data in this._viewData)
                 {
                     fileHtml = fileHtml.Replace($"{{{{{{{data.Key}}}}}}}", data.Value);
                 }
@@ -44,11 +44,11 @@
         {
             var layoutHtml = this.ReadLayoutFile();
 
-            var templateFullFilePath = $"{this.templateFullQualifiedName}{FileExtension}";
+            var templateFullFilePath = $"{this._templateFullQualifiedName}{FileExtension}";
 
             if (!File.Exists(templateFullFilePath))
             {
-                this.viewData["error"] = $"The requested view ({templateFullFilePath}) could not be found!";
+                this._viewData["error"] = $"The requested view ({templateFullFilePath}) could not be found!";
                 return this.GetErrorHtml();
             }
 
@@ -67,7 +67,7 @@
 
             if (!File.Exists(layoutHtmlFile))
             {
-                this.viewData["error"] = $"Layout view ({layoutHtmlFile}) could not be found!";
+                this._viewData["error"] = $"Layout view ({layoutHtmlFile}) could not be found!";
                 return this.GetErrorHtml();
             }
 

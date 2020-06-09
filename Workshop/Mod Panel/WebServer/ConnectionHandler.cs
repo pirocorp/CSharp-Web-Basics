@@ -9,13 +9,13 @@
     using System.Threading.Tasks;
     using Contracts;
     using System.Linq;
-    using global::WebServer.Http.Response;
+    using Http.Response;
 
     public class ConnectionHandler
     {
-        private readonly Socket client;
-        private readonly IHandleable mvcRequestHandler;
-        private readonly IHandleable resourceHandler;
+        private readonly Socket _client;
+        private readonly IHandleable _mvcRequestHandler;
+        private readonly IHandleable _resourceHandler;
 
         public ConnectionHandler(
             Socket client, 
@@ -26,9 +26,9 @@
             CoreValidator.ThrowIfNull(mvcRequestHandler, nameof(mvcRequestHandler));
             CoreValidator.ThrowIfNull(resourceHandler, nameof(resourceHandler));
 
-            this.client = client;
-            this.mvcRequestHandler = mvcRequestHandler;
-            this.resourceHandler = resourceHandler;
+            this._client = client;
+            this._mvcRequestHandler = mvcRequestHandler;
+            this._resourceHandler = resourceHandler;
         }
 
         public async Task ProcessRequestAsync()
@@ -43,7 +43,7 @@
 
                 var byteSegments = new ArraySegment<byte>(responseBytes);
 
-                await this.client.SendAsync(byteSegments, SocketFlags.None);
+                await this._client.SendAsync(byteSegments, SocketFlags.None);
 
                 Console.WriteLine($"-----REQUEST-----");
                 Console.WriteLine(httpRequest);
@@ -52,7 +52,7 @@
                 Console.WriteLine();
             }
             
-            this.client.Shutdown(SocketShutdown.Both);
+            this._client.Shutdown(SocketShutdown.Both);
         }
 
         private IHttpRequest ReadRequest()
@@ -63,7 +63,7 @@
             
             while (true)
             {
-                int numberOfBytesRead = this.client.Receive(data.Array, SocketFlags.None);
+                int numberOfBytesRead = this._client.Receive(data.Array, SocketFlags.None);
 
                 if (numberOfBytesRead == 0)
                 {
@@ -92,12 +92,12 @@
         {
             if (httpRequest.Path.Contains("."))
             {
-                return this.resourceHandler.Handle(httpRequest);
+                return this._resourceHandler.Handle(httpRequest);
             }
             else
             {
                 string sessionIdToSend = this.SetRequestSession(httpRequest);
-                var response = this.mvcRequestHandler.Handle(httpRequest);
+                var response = this._mvcRequestHandler.Handle(httpRequest);
                 this.SetResponseSession(response, sessionIdToSend);
                 return response;
             }

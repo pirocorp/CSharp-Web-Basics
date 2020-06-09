@@ -11,13 +11,13 @@
 
     public class HttpRequest : IHttpRequest
     {
-        private readonly string requestText;
+        private readonly string _requestText;
 
         public HttpRequest(string requestText)
         {
             CoreValidator.ThrowIfNullOrEmpty(requestText, nameof(requestText));
 
-            this.requestText = requestText;
+            this._requestText = requestText;
 
             this.FormData = new Dictionary<string, string>();
             this.UrlParameters = new Dictionary<string, string>();
@@ -226,6 +226,6 @@
             }
         }
 
-        public override string ToString() => this.requestText;
+        public override string ToString() => this._requestText;
     }
 }

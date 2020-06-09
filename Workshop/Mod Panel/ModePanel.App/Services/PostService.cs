@@ -12,41 +12,38 @@
 
     public class PostService : IPostService
     {
+        private readonly ModePanelDbContext _db;
+
+        public PostService(ModePanelDbContext db)
+        {
+            this._db = db;
+        }
+
         public void Create(string title, string content, int userId)
         {
-            using var db =  new ModePanelDbContext();
+            var post = new Post()
             {
-                var post = new Post()
-                {
-                    Title = title.Capitalize(),
-                    Content = content,
-                    UserId = userId,
-                    CreatedOn = DateTime.UtcNow
-                };
+                Title = title.Capitalize(),
+                Content = content,
+                UserId = userId,
+                CreatedOn = DateTime.UtcNow
+            };
 
-                db.Posts.Add(post);
-                db.SaveChanges();
-            }
+            this._db.Posts.Add(post);
+            this._db.SaveChanges();
         }
 
         public IEnumerable<PostListingModel> All()
-        {
-            using var db = new ModePanelDbContext();
-
-            return db.Posts
+            => this._db.Posts
                 .Select(p => new PostListingModel
                 {
                     Id = p.Id,
                     Title = p.Title
                 })
                 .ToList();
-        }
 
         public IEnumerable<HomeListingModel> All(int id)
-        {
-            using var db = new ModePanelDbContext();
-
-            return db.Posts
+            => this._db.Posts
                 .Where(p => p.Id == id)
                 .OrderByDescending(p => p.CreatedOn)
                 .Select(p => new HomeListingModel
@@ -57,13 +54,10 @@
                     CreatedOn = p.CreatedOn
                 })
                 .ToList();
-        }
 
         public IEnumerable<HomeListingModel> AllWithData(string search = null)
         {
-            using var db = new ModePanelDbContext();
-
-            var query = db.Posts.AsQueryable();
+            var query = this._db.Posts.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(search))
             {
@@ -84,54 +78,43 @@
         }
 
         public PostModel GetById(int id)
-        {
-            using (var db = new ModePanelDbContext())
-            {
-                return db.Posts
-                    .Where(p=> p.Id == id)
-                    .Select(p => new PostModel
-                    {
-                        Title = p.Title,
-                        Content = p.Content
-                    })
-                    .FirstOrDefault();
-            }
-        }
+            => this._db.Posts
+                .Where(p=> p.Id == id)
+                .Select(p => new PostModel
+                {
+                    Title = p.Title,
+                    Content = p.Content
+                })
+                .FirstOrDefault();
 
         public void Update(int id, string title, string content)
         {
-            using (var db = new ModePanelDbContext())
+            var post = this._db.Posts.Find(id);
+
+            if (post == null)
             {
-                var post = db.Posts.Find(id);
-
-                if (post == null)
-                {
-                    return;
-                }
-
-                post.Title = title.Capitalize();
-                post.Content = content;
-
-                db.SaveChanges();
+                return;
             }
+
+            post.Title = title.Capitalize();
+            post.Content = content;
+
+            this._db.SaveChanges();
         }
 
         public string Delete(int id)
         {
-            using (var db = new ModePanelDbContext())
+            var post = this._db.Posts.Find(id);
+
+            if (post == null)
             {
-                var post = db.Posts.Find(id);
-
-                if (post == null)
-                {
-                    return null;
-                }
-
-                db.Posts.Remove(post);
-                db.SaveChanges();
-
-                return post.Title;
+                return null;
             }
+
+            this._db.Posts.Remove(post);
+            this._db.SaveChanges();
+
+            return post.Title;
         }
     }
 }

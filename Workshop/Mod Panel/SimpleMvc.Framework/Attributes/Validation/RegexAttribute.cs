@@ -4,11 +4,11 @@
 
     public class RegexAttribute : PropertyValidationAttribute
     {
-        private readonly string pattern;
+        private readonly string _pattern;
 
         public RegexAttribute(string pattern)
         {
-            this.pattern = $"^{pattern}$";
+            this._pattern = $"^{pattern}$";
         }
 
         public override bool IsValid(object value)
@@ -19,7 +19,7 @@
                 return true;
             }
 
-            return Regex.IsMatch(valueAsString, this.pattern);
+            return Regex.IsMatch(valueAsString, this._pattern);
         }
     }
 }

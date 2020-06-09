@@ -9,11 +9,11 @@
 
     public class HttpHeaderCollection : IHttpHeaderCollection
     {
-        private readonly IDictionary<string, ICollection<HttpHeader>> headers;
+        private readonly IDictionary<string, ICollection<HttpHeader>> _headers;
 
         public HttpHeaderCollection()
         {
-            this.headers = new Dictionary<string, ICollection<HttpHeader>>();
+            this._headers = new Dictionary<string, ICollection<HttpHeader>>();
         }
 
         public void Add(HttpHeader header)
@@ -22,12 +22,12 @@
 
             var headerKey = header.Key;
 
-            if (!this.headers.ContainsKey(headerKey))
+            if (!this._headers.ContainsKey(headerKey))
             {
-                this.headers[headerKey] = new List<HttpHeader>();
+                this._headers[headerKey] = new List<HttpHeader>();
             }
 
-            this.headers[headerKey].Add(header);
+            this._headers[headerKey].Add(header);
         }
 
         public void Add(string key, string value)
@@ -42,32 +42,32 @@
         {
             CoreValidator.ThrowIfNull(key, nameof(key));
 
-            return this.headers.ContainsKey(key);
+            return this._headers.ContainsKey(key);
         }
 
         public ICollection<HttpHeader> Get(string key)
         {
             CoreValidator.ThrowIfNull(key, nameof(key));
 
-            if (!this.headers.ContainsKey(key))
+            if (!this._headers.ContainsKey(key))
             {
                 throw new InvalidOperationException($"The given key {key} is not present in the headers collection.");
             }
 
-            return this.headers[key];
+            return this._headers[key];
         }
 
         public IEnumerator<ICollection<HttpHeader>> GetEnumerator()
-            => this.headers.Values.GetEnumerator();
+            => this._headers.Values.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator()
-            => this.headers.Values.GetEnumerator();
+            => this._headers.Values.GetEnumerator();
 
         public override string ToString()
         {
             var result = new StringBuilder();
 
-            foreach (var header in this.headers)
+            foreach (var header in this._headers)
             {
                 var headerKey = header.Key;
 

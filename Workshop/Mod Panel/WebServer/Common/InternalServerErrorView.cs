@@ -5,16 +5,16 @@
 
     public class InternalServerErrorView : IView
     {
-        private readonly Exception exception;
+        private readonly Exception _exception;
 
         public InternalServerErrorView(Exception exception)
         {
-            this.exception = exception;
+            this._exception = exception;
         }
         
         public string View()
         {
-            return $"<h1>{this.exception.Message}</h1><h2>{this.exception.StackTrace}</h2>";
+            return $"<h1>{this._exception.Message}</h1><h2>{this._exception.StackTrace}</h2>";
         }
     }
 }

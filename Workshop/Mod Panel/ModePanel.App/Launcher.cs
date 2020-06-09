@@ -1,6 +1,7 @@
 ﻿namespace ModePanel.App
 {
     using Data;
+    using Infrastructure;
     using Microsoft.EntityFrameworkCore;
     using SimpleMvc.Framework;
     using SimpleMvc.Framework.Routers;
@@ -17,7 +18,7 @@
 
         public static void Main()
         {
-            MvcEngine.Run(new WebServer(80, new ControllerRouter(), new ResourceRouter()));
+            MvcEngine.Run(new WebServer(80, new DependencyControllerRouter(), new ResourceRouter()));
         }
     }
 }

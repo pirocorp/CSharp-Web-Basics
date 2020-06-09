@@ -4,10 +4,10 @@
 
     public class BadRequestException : Exception
     {
-        private const string InvalidRequestMessage = "Request is not valid.";
+        private const string INVALID_REQUEST_MESSAGE = "Request is not valid.";
 
         public static object ThrowFromInvalidRequest()
-            => throw new BadRequestException(InvalidRequestMessage);
+            => throw new BadRequestException(INVALID_REQUEST_MESSAGE);
 
         public BadRequestException(string message)
             : base(message)

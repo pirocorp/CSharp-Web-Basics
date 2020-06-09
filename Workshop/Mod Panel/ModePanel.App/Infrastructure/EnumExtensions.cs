@@ -11,7 +11,7 @@
             {
                 PositionType.Developer => position.ToString(),
                 PositionType.Designer => position.ToString(),
-                PositionType.HR => position.ToString(),
+                PositionType.Hr => position.ToString(),
                 PositionType.TechnicalSupport => "Technical Support",
                 PositionType.TechnicalTrainer => "Technical Trainer",
                 PositionType.MarketingSpecialist => "Marketing Specialist",

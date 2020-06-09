@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ModePanel.App.Infrastructure.Validation.Posts
+﻿namespace ModePanel.App.Infrastructure.Validation.Posts
 {
     using SimpleMvc.Framework.Attributes.Validation;
 

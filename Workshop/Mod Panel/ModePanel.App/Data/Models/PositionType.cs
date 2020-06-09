@@ -6,7 +6,7 @@
         Designer = 2,
         TechnicalSupport = 3,
         TechnicalTrainer = 4,
-        HR = 5,
+        Hr = 5,
         MarketingSpecialist = 6,
     }
 }

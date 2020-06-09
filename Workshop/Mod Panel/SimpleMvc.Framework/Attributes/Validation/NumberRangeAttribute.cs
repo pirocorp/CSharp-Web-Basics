@@ -2,13 +2,13 @@
 {
     public class NumberRangeAttribute : PropertyValidationAttribute
     {
-        private readonly double minimum;
-        private readonly double maximum;
+        private readonly double _minimum;
+        private readonly double _maximum;
 
         public NumberRangeAttribute(double minimum, double maximum)
         {
-            this.minimum = minimum;
-            this.maximum = maximum;
+            this._minimum = minimum;
+            this._maximum = maximum;
         }
 
         public override bool IsValid(object value)
@@ -19,7 +19,7 @@
                 return true;
             }
 
-            return minimum <= valueAsDouble && valueAsDouble <= maximum;
+            return this._minimum <= valueAsDouble && valueAsDouble <= this._maximum;
         }
     }
 }

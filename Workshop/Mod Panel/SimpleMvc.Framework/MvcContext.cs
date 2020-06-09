@@ -2,12 +2,12 @@
 {
     public class MvcContext
     {
-        private static MvcContext instance;
+        private static MvcContext _instance;
 
         private MvcContext() { }
 
         public static MvcContext Get
-            => instance == null ? (instance = new MvcContext()) : instance;
+            => _instance == null ? (_instance = new MvcContext()) : _instance;
 
         public string AssemblyName { get; set; }
 

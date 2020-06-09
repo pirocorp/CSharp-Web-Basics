@@ -5,7 +5,6 @@
     using Data.Models;
     using Infrastructure;
     using Models.Posts;
-    using Services;
     using Services.Contracts;
     using SimpleMvc.Framework.Attributes.Methods;
     using SimpleMvc.Framework.Contracts;
@@ -16,13 +15,13 @@
 
         private readonly IUserService _userService;
         private readonly IPostService _postService;
-        private readonly ILogService _logService;
 
-        public AdminController()
+        public AdminController(IUserService userService, IPostService postService, 
+            ILogService logService) 
+            : base(logService)
         {
-            this._userService = new UserService();
-            this._postService = new PostService();
-            this._logService = new LogService();
+            this._userService = userService;
+            this._postService = postService;
         }
 
         public IActionResult Users()
@@ -174,7 +173,7 @@
 
         public IActionResult Log()
         {
-            var rows = this._logService
+            var rows = this.logService
                 .All()
                 .Select(l => l.ToHtml());
 

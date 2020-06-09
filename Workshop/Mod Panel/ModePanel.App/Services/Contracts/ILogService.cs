@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using Data.Models;
-    using Models.Admin;
     using Models.Logs;
 
     public interface ILogService

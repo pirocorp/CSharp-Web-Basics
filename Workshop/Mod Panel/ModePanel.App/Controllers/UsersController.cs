@@ -1,7 +1,6 @@
 ﻿namespace ModePanel.App.Controllers
 {
     using Models.Users;
-    using Services;
     using Services.Contracts;
     using SimpleMvc.Framework.Attributes.Methods;
     using SimpleMvc.Framework.Contracts;
@@ -15,9 +14,10 @@
 
         private readonly IUserService _userService;
 
-        public UsersController()
+        public UsersController(ILogService logService, IUserService userService) 
+            : base(logService)
         {
-            this._userService = new UserService();
+            this._userService = userService;
         }
 
         public IActionResult Register() => this.View();

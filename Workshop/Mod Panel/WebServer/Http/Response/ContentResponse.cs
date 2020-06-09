@@ -5,13 +5,13 @@
 
     public class ContentResponse : HttpResponse
     {
-        private readonly string content;
+        private readonly string _content;
 
         public ContentResponse(HttpStatusCode statusCode, string content)
         {
             this.ValidateStatusCode(statusCode);
 
-            this.content = content;
+            this._content = content;
             this.StatusCode = statusCode;
 
             this.Headers.Add(HttpHeader.ContentType, "text/html");
@@ -29,7 +29,7 @@
 
         public override string ToString()
         {
-            return $"{base.ToString()}{this.content}";
+            return $"{base.ToString()}{this._content}";
         }
     }
 }

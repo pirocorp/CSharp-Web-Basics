@@ -2,7 +2,6 @@
 {
     using Data.Models;
     using Models.Posts;
-    using Services;
     using Services.Contracts;
     using SimpleMvc.Framework.Attributes.Methods;
     using SimpleMvc.Framework.Contracts;
@@ -13,9 +12,10 @@
 
         private readonly IPostService _postService;
 
-        public PostsController()
+        public PostsController(ILogService logService, IPostService postService) 
+            : base(logService)
         {
-            this._postService = new PostService();
+            this._postService = postService;
         }
 
         public IActionResult Create()
