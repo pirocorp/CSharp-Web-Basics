@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using Contracts;
     using Data;
     using Data.Models;
@@ -13,10 +15,12 @@
     public class PostService : IPostService
     {
         private readonly ModePanelDbContext _db;
+        private readonly IMapper _mapper;
 
-        public PostService(ModePanelDbContext db)
+        public PostService(ModePanelDbContext db, IMapper mapper)
         {
             this._db = db;
+            this._mapper = mapper;
         }
 
         public void Create(string title, string content, int userId)
@@ -35,24 +39,14 @@
 
         public IEnumerable<PostListingModel> All()
             => this._db.Posts
-                .Select(p => new PostListingModel
-                {
-                    Id = p.Id,
-                    Title = p.Title
-                })
+                .ProjectTo<PostListingModel>(this._mapper.ConfigurationProvider)
                 .ToList();
 
         public IEnumerable<HomeListingModel> All(int id)
             => this._db.Posts
                 .Where(p => p.Id == id)
                 .OrderByDescending(p => p.CreatedOn)
-                .Select(p => new HomeListingModel
-                {
-                    Title = p.Title,
-                    Content = p.Content,
-                    CreatedBy = p.User.Email,
-                    CreatedOn = p.CreatedOn
-                })
+                .ProjectTo<HomeListingModel>(this._mapper.ConfigurationProvider)
                 .ToList();
 
         public IEnumerable<HomeListingModel> AllWithData(string search = null)
@@ -67,24 +61,14 @@
 
             return query
                 .OrderByDescending(p => p.Id)
-                .Select(p => new HomeListingModel
-                {
-                    Title = p.Title,
-                    Content = p.Content,
-                    CreatedBy = p.User.Email,
-                    CreatedOn = p.CreatedOn
-                })
+                .ProjectTo<HomeListingModel>(this._mapper.ConfigurationProvider)
                 .ToList();
         }
 
         public PostModel GetById(int id)
             => this._db.Posts
                 .Where(p=> p.Id == id)
-                .Select(p => new PostModel
-                {
-                    Title = p.Title,
-                    Content = p.Content
-                })
+                .ProjectTo<PostModel>(this._mapper.ConfigurationProvider)
                 .FirstOrDefault();
 
         public void Update(int id, string title, string content)

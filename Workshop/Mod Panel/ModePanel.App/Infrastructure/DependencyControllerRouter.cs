@@ -1,6 +1,8 @@
 ﻿namespace ModePanel.App.Infrastructure
 {
     using System;
+    using System.Reflection;
+    using AutoMapper;
     using Controllers;
     using Data;
     using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +30,8 @@
             var serviceCollection = new ServiceCollection();
             
             serviceCollection.AddDbContext<ModePanelDbContext>();
+            //Search for mapper configuration in assembly where specified type is
+            serviceCollection.AddAutoMapper(typeof(Launcher)); 
 
             serviceCollection.AddTransient<ILogService, LogService>();
             serviceCollection.AddTransient<IPostService, PostService>();

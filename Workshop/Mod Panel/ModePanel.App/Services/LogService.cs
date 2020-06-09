@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using Contracts;
     using Data;
     using Data.Models;
@@ -10,10 +12,12 @@
     public class LogService : ILogService
     {
         private readonly ModePanelDbContext _db;
+        private readonly IMapper _mapper;
 
-        public LogService(ModePanelDbContext db)
+        public LogService(ModePanelDbContext db, IMapper mapper)
         {
             this._db = db;
+            this._mapper = mapper;
         }
 
         public void Create(string admin, LogType type, string additionalInfo)
@@ -32,12 +36,7 @@
         public IEnumerable<LogModel> All()
             => this._db.Logs
                 .OrderByDescending(l => l.Id)
-                .Select(l => new LogModel()
-                {
-                    Admin = l.Admin,
-                    Type = l.Type,
-                    AdditionalInformation = l.AdditionalInformation
-                })
+                .ProjectTo<LogModel>(this._mapper.ConfigurationProvider)
                 .ToList();
     }
 }

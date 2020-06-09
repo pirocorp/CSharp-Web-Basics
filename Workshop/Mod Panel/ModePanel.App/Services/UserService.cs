@@ -2,7 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using Contracts;
     using Data;
     using Data.Models;
@@ -11,10 +12,12 @@
     public class UserService : IUserService
     {
         private readonly ModePanelDbContext _db;
+        private readonly IMapper _mapper;
 
-        public UserService(ModePanelDbContext db)
+        public UserService(ModePanelDbContext db, IMapper mapper)
         {
             this._db = db;
+            this._mapper = mapper;
         }
 
         public bool Create(string email, string password, PositionType position)
@@ -51,14 +54,7 @@
 
         public IEnumerable<AdminUserModel> All()
             => this._db.Users
-                .Select(u => new AdminUserModel
-                {
-                    Id = u.Id,
-                    Email = u.Email,
-                    Position = u.Position,
-                    IsApproved = u.IsApproved,
-                    Posts = u.Posts.Count
-                })
+                .ProjectTo<AdminUserModel>(this._mapper.ConfigurationProvider)
                 .ToList();
 
         public string Approve(int id)
