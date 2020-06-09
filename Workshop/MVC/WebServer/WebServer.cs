@@ -4,7 +4,6 @@
     using System;
     using System.Net;
     using System.Net.Sockets;
-    using System.Net.WebSockets;
     using System.Threading.Tasks;
 
     public class WebServer : IRunnable

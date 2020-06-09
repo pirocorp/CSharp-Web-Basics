@@ -1,7 +1,6 @@
 ﻿namespace GameStore.App.Controllers
 {
     using Models.Users;
-    using Services;
     using Services.Contracts;
     using SimpleMvc.Framework.Attributes.Methods;
     using SimpleMvc.Framework.Contracts;
@@ -12,11 +11,11 @@
         private const string EMAIL_EXISTS_ERROR = "<p>E-mails is already taken.</p>";
         private const string LOGIN_ERROR = "<p>Invalid credentials.</p>";
 
-        private readonly IUserService _userService;
+        private readonly IUsersService _usersService;
 
-        public UsersController()
+        public UsersController(IUsersService usersService)
         {
-            this._userService = new UserService();
+            this._usersService = usersService;
         }
 
         public IActionResult Register() => this.View();
@@ -31,7 +30,7 @@
                 return this.View();
             }
 
-            var result = this._userService.Create(
+            var result = this._usersService.Create(
                 model.Email, 
                 model.Password,
                 model.FullName);
@@ -43,7 +42,7 @@
             }
 
             this.SignIn(model.Email);
-            return this.Redirect("/users/login");
+            return this.Redirect("/");
         }
 
         public IActionResult Login()
@@ -58,7 +57,7 @@
                 return this.View();
             }
 
-            if (!this._userService.Exists(model.Email, model.Password))
+            if (!this._usersService.Exists(model.Email, model.Password))
             {
                 this.ShowError(LOGIN_ERROR);
                 return this.View();

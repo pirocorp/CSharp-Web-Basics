@@ -3,7 +3,6 @@
     using System.Linq;
     using Data.Models;
     using Models.Games;
-    using Services;
     using Services.Contracts;
     using SimpleMvc.Framework.Attributes.Methods;
     using SimpleMvc.Framework.Contracts;
@@ -14,9 +13,9 @@
 
         private readonly IGamesService _gamesService;
 
-        public AdminController()
+        public AdminController(IGamesService gamesService)
         {
-            this._gamesService = new GamesService();
+            this._gamesService = gamesService;
         }
 
         public IActionResult AllGames()

@@ -59,6 +59,16 @@
             }
         }
 
+        /// <summary>
+        /// Instantiates Controller child with parameterless constructor
+        /// </summary>
+        /// <param name="controllerType">Type (class) which will be instantiated.
+        /// Must inherit Controller class
+        /// </param>
+        /// <returns>Controller instance</returns>
+        protected virtual Controller CreateController(Type controllerType)
+            => Activator.CreateInstance(controllerType) as Controller;
+
         private void PrepareControllerAndActionNames(IHttpRequest request)
         {
             var pathParts = request.Path.Split(new []{'/', '?'}, StringSplitOptions.RemoveEmptyEntries);
@@ -102,7 +112,7 @@
                 return null;
             }
 
-            this._controllerInstance = Activator.CreateInstance(controllerType) as Controller;
+            this._controllerInstance = this.CreateController(controllerType);
 
             return this._controllerInstance;
         }
