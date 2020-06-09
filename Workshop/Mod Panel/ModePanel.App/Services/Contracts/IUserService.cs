@@ -15,5 +15,7 @@
         IEnumerable<AdminUserModel> All();
 
         string Approve(int id);
+
+        User GetUserProfile(string userIdentity);
     }
 }

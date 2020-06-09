@@ -1,8 +1,5 @@
 ﻿namespace ModePanel.App.Controllers
 {
-    using System.Linq;
-
-    using Data;
     using Data.Models;
     using Services.Contracts;
     using SimpleMvc.Framework.Contracts;
@@ -11,8 +8,9 @@
     public abstract class BaseController : Controller
     {
         protected readonly ILogService logService;
+        protected readonly IUserService userService;
 
-        protected BaseController(ILogService logService)
+        protected BaseController(ILogService logService, IUserService userService)
         {
             this.ViewModel["show-error"] = "none";
 
@@ -21,6 +19,7 @@
             this.ViewModel["adminDisplay"] = "none";
 
             this.logService = logService;
+            this.userService = userService;
         }
 
         protected User Profile { get; private set; }
@@ -42,11 +41,7 @@
                 this.ViewModel["anonymousDisplay"] = "none";
                 this.ViewModel["userDisplay"] = "inherit";
 
-                using (var db = new ModePanelDbContext())
-                {
-                    this.Profile = db.Users
-                        .First(u => u.Email == this.User.Name);
-                }
+                this.Profile = this.userService.GetUserProfile(this.User.Name);
 
                 if (this.Profile.IsAdmin)
                 {

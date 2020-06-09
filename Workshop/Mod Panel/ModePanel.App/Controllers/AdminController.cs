@@ -13,14 +13,12 @@
     {
         private const string EDIT_ERROR = "<p>Check your form for error</p><p>Title – must begin with uppercase letter and has length between 3 and 100 symbols </p><p>Content – must be at least 20 symbols </p>";
 
-        private readonly IUserService _userService;
         private readonly IPostService _postService;
 
         public AdminController(IUserService userService, IPostService postService, 
             ILogService logService) 
-            : base(logService)
+            : base(logService, userService)
         {
-            this._userService = userService;
             this._postService = postService;
         }
 
@@ -31,7 +29,7 @@
                 return this.RedirectToLogin();
             }
 
-            var rows = this._userService
+            var rows = this.userService
                 .All()
                 .Select(u => $@"
                     <tr>
@@ -59,7 +57,7 @@
                 return this.RedirectToLogin();
             }
 
-            var userEmail = this._userService.Approve(id);
+            var userEmail = this.userService.Approve(id);
             this.Log(LogType.UserApproval, userEmail);
 
             return this.Redirect("/admin/users");

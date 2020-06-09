@@ -12,8 +12,9 @@
 
         private readonly IPostService _postService;
 
-        public PostsController(ILogService logService, IPostService postService) 
-            : base(logService)
+        public PostsController(ILogService logService, IPostService postService, 
+            IUserService userService) 
+            : base(logService, userService)
         {
             this._postService = postService;
         }

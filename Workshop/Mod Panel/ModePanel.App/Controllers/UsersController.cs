@@ -12,12 +12,9 @@
         private const string LOGIN_ERROR = "<p>Invalid credentials.</p>";
         private const string USER_IS_NOT_APPROVED_ERROR = "You must wait for your registration to be approved!";
 
-        private readonly IUserService _userService;
-
         public UsersController(ILogService logService, IUserService userService) 
-            : base(logService)
+            : base(logService, userService)
         {
-            this._userService = userService;
         }
 
         public IActionResult Register() => this.View();
@@ -32,7 +29,7 @@
                 return this.View();
             }
 
-            var result = this._userService.Create(
+            var result = this.userService.Create(
                 model.Email, 
                 model.Password,
                 model.PositionType());
@@ -58,13 +55,13 @@
                 return this.View();
             }
 
-            if (!this._userService.UserIsApproved(model.Email))
+            if (!this.userService.UserIsApproved(model.Email))
             {
                 this.ShowError(USER_IS_NOT_APPROVED_ERROR);
                 return this.View();
             }
 
-            if (!this._userService.Exists(model.Email, model.Password))
+            if (!this.userService.Exists(model.Email, model.Password))
             {
                 this.ShowError(LOGIN_ERROR);
                 return this.View();
