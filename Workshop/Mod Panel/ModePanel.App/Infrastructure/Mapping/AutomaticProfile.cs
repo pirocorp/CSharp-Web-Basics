@@ -7,7 +7,7 @@
     /// Maps automatically this.CreateMap&lt;TSource, TDestination&gt; () maps
     /// if TDestination implements IMapFrom interface
     /// </summary>
-    public class AutomaticProfile : PostProfile
+    public class AutomaticProfile : Profile
     {
         public AutomaticProfile()
         {
