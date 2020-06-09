@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using Contracts;
     using Data;
     using Data.Models;
@@ -11,21 +13,17 @@
     public class GamesService : IGamesService
     {
         private readonly GameStoreDbContext _db;
+        private readonly IMapper _mapper;
 
-        public GamesService(GameStoreDbContext db)
+        public GamesService(GameStoreDbContext db, IMapper mapper)
         {
             this._db = db;
+            this._mapper = mapper;
         }
 
         public IEnumerable<GameListingAdminModel> All()
             => this._db.Games
-                .Select(g => new GameListingAdminModel()
-                {
-                    Id = g.Id,
-                    Name = g.Title,
-                    Price = g.Price,
-                    Size = g.Size
-                })
+                .ProjectTo<GameListingAdminModel>(this._mapper.ConfigurationProvider)
                 .ToList();
 
         public void Create(string title, string description, string thumbnailUrl, 

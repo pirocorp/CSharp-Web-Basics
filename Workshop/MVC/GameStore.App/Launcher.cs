@@ -1,5 +1,6 @@
 ﻿namespace GameStore.App
 {
+    using AutoMapper;
     using Controllers;
     using Data;
     using Infrastructure;
@@ -37,6 +38,7 @@
         private static ServiceProvider ConfigureServicesProvider(IServiceCollection serviceCollection)
         {
             serviceCollection.AddDbContext<GameStoreDbContext>();
+            serviceCollection.AddAutoMapper(typeof(Launcher)); //Add Assembly from type or AssemblyProfile
 
             serviceCollection.AddTransient<IGamesService, GamesService>();
             serviceCollection.AddTransient<IUsersService, UsersService>();
