@@ -6,6 +6,7 @@
     using Data;
     using Data.Models;
     using Models.Admin;
+    using Models.Logs;
 
     public class LogService : ILogService
     {
@@ -25,13 +26,13 @@
             }
         }
 
-        public IEnumerable<AdminLogModel> All()
+        public IEnumerable<LogModel> All()
         {
             using (var db = new ModePanelDbContext())
             {
                 return db.Logs
                     .OrderByDescending(l => l.Id)
-                    .Select(l => new AdminLogModel()
+                    .Select(l => new LogModel()
                     {
                         Admin = l.Admin,
                         Type = l.Type,

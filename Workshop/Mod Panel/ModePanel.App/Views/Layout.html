@@ -14,7 +14,7 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+        <nav class="navbar navbar-expand-md navbar-dark bg-primary flex-nowrap">
             <a class="navbar-brand" href="/">Mod Panel</a>
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0" style="display: {{{adminDisplay}}}">
                 <li class="nav-item dropdown">
@@ -26,7 +26,7 @@
                     </div>
                 </li>
             </ul>
-            <div class="container">
+            <div class="container justify-content-end">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-collapse" aria-controls="nav-collapse"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -43,8 +43,8 @@
                     </ul>
                     <ul class="navbar-nav ml-auto" style="display: {{{userDisplay}}}">
                         <li class="navbar-nav">
-                            <form class="form-inline my-2 my-lg-0">
-                                <input class="form-control mr-sm-2" type="text" name="q" placeholder="Search" aria-label="Search">
+                            <form method="get" action="/" class="form-inline my-2 my-lg-0">
+                                <input class="form-control mr-sm-2" type="text" name="query" placeholder="Search" aria-label="Search">
                                 <button class="btn btn-dark mr-3 my-2 my-sm-0" type="submit">Search</button>
                             </form>
                         </li>
@@ -74,7 +74,7 @@
 
     <footer>
         <div class="container modal-footer">
-            <p>&copy; 2017 - Software University</p>
+            <p>&copy; 2020 - Software University</p>
         </div>
     </footer>
 

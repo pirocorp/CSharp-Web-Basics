@@ -1,12 +1,78 @@
 ﻿namespace ModePanel.App.Controllers
 {
+    using System;
+    using System.Linq;
+    using Infrastructure;
+    using Services;
+    using Services.Contracts;
     using SimpleMvc.Framework.Contracts;
-    using SimpleMvc.Framework.Controllers;
 
     public class HomeController : BaseController
     {
+        private readonly ILogService _logService;
+        private readonly IPostService _postService;
+
+        public HomeController()
+        {
+            this._logService = new LogService();    
+            this._postService = new PostService();
+        }
+
         public IActionResult Index()
         {
+            this.ViewModel["guestDisplay"] = "block";
+            this.ViewModel["authenticatedDisplay"] = "none";
+            this.ViewModel["adminDisplay"] = "none";
+
+            if (this.User.IsAuthenticated)
+            {
+                this.ViewModel["guestDisplay"] = "none";
+                this.ViewModel["authenticatedDisplay"] = "flex";
+
+                string query = null;
+                if (this.Request.UrlParameters.ContainsKey("query"))
+                {
+                    query = this.Request.UrlParameters["query"];
+                }
+
+                var postsData = this._postService.AllWithData(query);
+
+                var postsCards = postsData
+                    .Select(p => $@"
+                            <div class=""card border-primary mb-3"">
+                                <div class=""card-body text-primary"">
+                                    <h4 class=""card-title"">{p.Title}</h4>
+                                    <p class=""card-text"">
+                                        {p.Content}
+                                    </p>
+                                </div>
+                                <div class=""card-footer bg-transparent text-right"">
+                                    <span class=""text-muted"">
+                                        Created on {(p.CreatedOn ?? DateTime.UtcNow).ToShortDateString()} by
+                                        <em>
+                                            <strong>{p.CreatedBy}</strong>
+                                        </em>
+                                    </span>
+                                </div>
+                            </div>");
+
+                this.ViewModel["posts"] = postsCards.Any() 
+                    ? string.Join(string.Empty, postsCards)
+                    : "<h2>No posts found!</h2>";
+
+                if (this.IsAdmin)
+                {
+                    this.ViewModel["authenticatedDisplay"] = "none";
+                    this.ViewModel["adminDisplay"] = "flex";
+
+                    var logsResult = this._logService
+                        .All()
+                        .Select(l => l.ToHtml());
+
+                    this.ViewModel["logs"] = string.Join(string.Empty, logsResult);
+                }
+            }
+
             return this.View();
         }
     }

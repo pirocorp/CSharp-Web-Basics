@@ -1,1 +1,31 @@
-﻿
+﻿<main>
+    <div class="container">
+        <div class="row card card-muted" style="display: {{{guestDisplay}}}">
+            <div>
+                <img class="img-fluid" src="https://ipp.nl/wp-content/uploads/2018/09/Welcome-1024x368.png" alt="Welcome" />
+            </div>
+            <p class="text-center">
+                Welcome
+            </p>
+            <p class="text-center">Please <a href="/users/login">login</a>. If you don't have a registration yet, you can register <a href="/users/register">here</a></p>
+        </div>
+        <div class="row" style="display: {{{authenticatedDisplay}}}">
+            <div class="col col-md-10 mr-auto ml-auto">
+                <br />
+                {{{posts}}}
+            </div>
+            <br />
+        </div>
+        <div class="row" style="display: {{{adminDisplay}}}">
+            <div class="col col-md-6 mr-auto ml-auto">
+                <br />
+                {{{posts}}}
+            </div>
+            <div class="col col-md-6 mr-auto ml-auto">
+                <br />
+                {{{logs}}}
+            </div>
+            <br />
+        </div>
+    </div>
+</main>

@@ -1,5 +1,6 @@
 ﻿namespace ModePanel.App.Data.Models
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
 
     public class Post
@@ -15,6 +16,8 @@
         [Required]
         [MinLength(10)]
         public string Content { get; set; }
+
+        public DateTime? CreatedOn { get; set; }
 
         public int UserId { get; set; }
 

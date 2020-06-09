@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ModePanel.App.Data;
 
 namespace ModePanel.App.Data.Migrations
 {
     [DbContext(typeof(ModePanelDbContext))]
-    partial class ModePanelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200609094221_PostsCreatedOnColumn")]
+    partial class PostsCreatedOnColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

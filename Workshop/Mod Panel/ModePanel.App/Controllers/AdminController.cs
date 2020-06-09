@@ -176,15 +176,10 @@
         {
             var rows = this._logService
                 .All()
-                .Select(l => $@"
-                    <div class=""card border-{l.Type.ToViewClassName()} mb-1"">
-                        <div class=""card-body"">
-                            <p class=""card-text"">{l}</p>
-                        </div>
-                    </div>");
+                .Select(l => l.ToHtml());
 
 
-             this.ViewModel["logs"] = string.Join(string.Empty, rows);
+            this.ViewModel["logs"] = string.Join(string.Empty, rows);
 
             this.Log(LogType.OpenMenu, nameof(this.Log));
 

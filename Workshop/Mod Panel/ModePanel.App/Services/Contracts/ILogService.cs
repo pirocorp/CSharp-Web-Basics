@@ -3,11 +3,12 @@
     using System.Collections.Generic;
     using Data.Models;
     using Models.Admin;
+    using Models.Logs;
 
     public interface ILogService
     {
         void Create(string admin, LogType type, string additionalInfo);
 
-        IEnumerable<AdminLogModel> All();
+        IEnumerable<LogModel> All();
     }
 }
