@@ -9,6 +9,7 @@
     using Data;
     using Data.Models;
     using Models.Games;
+    using Models.Home;
 
     public class GamesService : IGamesService
     {
@@ -21,10 +22,30 @@
             this._mapper = mapper;
         }
 
-        public IEnumerable<GameListingAdminModel> All()
-            => this._db.Games
-                .ProjectTo<GameListingAdminModel>(this._mapper.ConfigurationProvider)
+        public bool Exists(int id)
+            => this._db.Games.Any(g => g.Id == id);
+
+        public IEnumerable<TModel> ByIds<TModel>(IEnumerable<int> ids)
+            => this._db
+                .Games
+                .Where(g => ids.Contains(g.Id))
+                .ProjectTo<TModel>(this._mapper.ConfigurationProvider)
                 .ToList();
+
+        public IEnumerable<TModel> All<TModel>(int? userId = null)
+        {
+            var query = this._db.Games.AsQueryable();
+
+            if (userId.HasValue)
+            {
+                query = query
+                    .Where(g => g.Orders.Any(o => o.UserId == userId));
+            }
+
+            return query
+                .ProjectTo<TModel>(this._mapper.ConfigurationProvider)
+                .ToList();
+        }
 
         public void Create(string title, string description, string thumbnailUrl, 
             decimal price, double size, string videoId, DateTime releaseDate)

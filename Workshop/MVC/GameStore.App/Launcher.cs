@@ -3,6 +3,7 @@
     using AutoMapper;
     using Controllers;
     using Data;
+    using Data.Models;
     using Infrastructure;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
@@ -42,10 +43,12 @@
 
             serviceCollection.AddTransient<IGamesService, GamesService>();
             serviceCollection.AddTransient<IUsersService, UsersService>();
+            serviceCollection.AddTransient<IOrdersService, OrdersService>();
 
             serviceCollection.AddTransient<HomeController>();
             serviceCollection.AddTransient<AdminController>();
             serviceCollection.AddTransient<UsersController>();
+            serviceCollection.AddTransient<OrdersController>();
 
             return serviceCollection.BuildServiceProvider();
         }

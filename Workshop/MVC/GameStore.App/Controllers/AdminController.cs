@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using Data.Models;
+    using Infrastructure;
     using Models.Games;
     using Services.Contracts;
     using SimpleMvc.Framework.Attributes.Methods;
@@ -22,20 +23,11 @@
         {
             if (!this.IsAdmin)
             {
-                return this.Redirect("/");
+                return this.RedirectToHome();
             }
 
-            var games = this._gamesService.All()
-                .Select(g => $@"<tr>
-                    <th scope=""row"">{g.Id}</th>
-                    <td>{g.Name}</td>
-                    <td>{g.Size:F1} GB</td>
-                    <td>{g.Price:F2} &euro;</td>
-                    <td>
-                        <a href=""/admin/editGame?id={g.Id}"" class=""btn btn-success btn-sm"">Edit</a>
-                        <a href=""/admin/deleteGame?id={g.Id}"" class=""btn btn-danger btn-sm"">Delete</a>
-                    </td>
-                </tr>");
+            var games = this._gamesService.All<GameListingAdminModel>()
+                .Select(g => g.ToHtml());
 
             this.ViewModel["games"] = string.Join(string.Empty, games);
             return this.View();
@@ -45,7 +37,7 @@
         {
             if (!this.IsAdmin)
             {
-                return this.Redirect("/");
+                return this.RedirectToHome();
             }
 
             return this.View();
@@ -56,7 +48,7 @@
         {
             if (!this.IsAdmin)
             {
-                return this.Redirect("/");
+                return this.RedirectToHome();
             }
 
             if (!this.IsValidModel(model))
@@ -69,14 +61,14 @@
                 model.Title, model.Description, model.ThumbnailUrl, model.Price,
                 model.Size, model.VideoId, model.ReleaseDate);
 
-            return this.Redirect("/admin/allGames");
+            return this.RedirectToAllGames();
         }
 
         public IActionResult EditGame(int id)
         {
             if (!this.IsAdmin)
             {
-                return this.Redirect("/");
+                return this.RedirectToHome();
             }
 
             var game = this._gamesService.GetById(id);
@@ -95,7 +87,7 @@
         {
             if (!this.IsAdmin)
             {
-                return this.Redirect("/");
+                return this.RedirectToHome();
             }
 
             if (!this.IsValidModel(model))
@@ -108,14 +100,14 @@
                 model.ThumbnailUrl, model.Price, model.Size, model.VideoId, 
                 model.ReleaseDate);
 
-            return this.Redirect("/admin/allGames");
+            return this.RedirectToAllGames();
         }
 
         public IActionResult DeleteGame(int id)
         {
             if (!this.IsAdmin)
             {
-                return this.Redirect("/");
+                return this.RedirectToHome();
             }
 
             var game = this._gamesService.GetById(id);
@@ -136,7 +128,7 @@
         {
             if (!this.IsAdmin)
             {
-                return this.Redirect("/");
+                return this.RedirectToHome();
             }
 
             var game = this._gamesService.GetById(id);
@@ -147,7 +139,7 @@
             }
 
             this._gamesService.Delete(id);
-            return this.Redirect("/admin/allGames");
+            return this.RedirectToAllGames();
         }
 
         private void SetGameViewData(Game game)
@@ -160,5 +152,8 @@
             this.ViewModel["videoId"] = game.VideoId;
             this.ViewModel["releaseDate"] = game.ReleaseDate.ToString("yyyy-MM-dd");
         }
+
+        private IActionResult RedirectToAllGames()
+            => this.Redirect("/admin/allGames");
     }
 }

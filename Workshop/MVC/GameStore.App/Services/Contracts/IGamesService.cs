@@ -3,13 +3,16 @@
     using System;
     using System.Collections.Generic;
     using Data.Models;
-    using Models.Games;
 
     public interface IGamesService
     {
-        public IEnumerable<GameListingAdminModel> All();
+        bool Exists(int id);
 
-        public void Create(string title, string description, string thumbnailUrl, decimal price, double size, string videoId, DateTime releaseDate);
+        IEnumerable<TModel> All<TModel>(int? userId = null);
+
+        IEnumerable<TModel> ByIds<TModel>(IEnumerable<int> ids);
+
+        void Create(string title, string description, string thumbnailUrl, decimal price, double size, string videoId, DateTime releaseDate);
 
         Game GetById(int id);
 
