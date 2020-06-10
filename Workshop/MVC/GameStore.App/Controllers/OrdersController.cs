@@ -10,10 +10,13 @@
     public class OrdersController : BaseController
     {
         private readonly IGamesService _gamesService;
+        private readonly IOrdersService _ordersService;
 
-        public OrdersController(IGamesService gamesService)
+        public OrdersController(IGamesService gamesService, 
+            IOrdersService ordersService)
         {
             this._gamesService = gamesService;
+            this._ordersService = ordersService;
         }
 
         public IActionResult Buy(int id)
@@ -61,7 +64,7 @@
         }
 
         [HttpPost]
-        public IActionResult Finish(int id)
+        public IActionResult Finish()
         {
             if (!this.User.IsAuthenticated)
             {
@@ -69,9 +72,11 @@
             }
 
             var shoppingCart = this.Request.Session.GetShoppingCart();
-
             var gameIds = shoppingCart.AllGames();
 
+            this._ordersService.Purchase(this.Profile.Id, gameIds);
+            shoppingCart.Clear();
+            
             return this.RedirectToHome();
         }
     }

@@ -4,6 +4,6 @@
 
     public interface IOrdersService
     {
-        void Purchase(IEnumerable<int> gameIds);
+        void Purchase(int userId, IEnumerable<int> gameIds);
     }
 }
