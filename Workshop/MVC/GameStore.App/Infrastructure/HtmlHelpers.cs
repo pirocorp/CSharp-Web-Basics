@@ -20,7 +20,7 @@
 
         public static string ToHtml(this GameListingHomeModel game, bool isAdmin)
             => $@"
-                <div class=""card col-4 thumbnail"">
+                <div class=""card col-sm-4 thumbnail"">
 
                     <img class=""card-image-top img-fluid img-thumbnail""
                          onerror=""this.src='https://i.ytimg.com/vi/{game.VideoId}/maxresdefault.jpg';""
@@ -64,6 +64,27 @@
                         </div>
                     </div>";
 
+        public static string ToHtml(this GameDetailsModel game, bool isAdmin)
+            => $@"<h1 class=""display-3"">{game.Title}</h1>
+                <br />
 
+                <iframe width=""560"" height=""315"" src=""https://www.youtube.com/embed/{game.VideoId}"" frameborder=""0""
+                        allowfullscreen></iframe>
+
+                <br />
+                <br />
+
+                <p>
+                    {game.Description}
+                </p>
+
+                <p><strong>Price</strong> - {game.Price:F2}&euro;</p>
+                <p><strong>Size</strong> - {game.Size:F1} GB</p>
+                <p><strong>Release Date</strong> - {game.ReleaseDate.ToShortDateString()}</p>
+
+                <a class=""btn btn-outline-primary"" href=""/"">Back</a>
+                {(!isAdmin ? string.Empty : $@"<a class=""btn btn-warning"" href=""/admin/editGame?id={game.Id}"">Edit</a>
+                <a class=""btn btn-danger"" href=""/admin/deleteGame?id={game.Id}"">Delete</a>")}
+                <a class=""btn btn-primary"" href=""/orders/buy?id={game.Id}"">Buy</a>";
     }
 }

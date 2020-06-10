@@ -65,8 +65,11 @@
             this._db.SaveChanges();
         }
 
-        public Game GetById(int id)
-            => this._db.Games.Find(id);
+        public TModel GetById<TModel>(int id)
+            => this._db.Games
+                .Where(g => g.Id == id)
+                .ProjectTo<TModel>(this._mapper.ConfigurationProvider)
+                .FirstOrDefault();
 
         public void Update(int id, string modelTitle, string modelDescription, 
             string modelThumbnailUrl, decimal modelPrice, double modelSize, 

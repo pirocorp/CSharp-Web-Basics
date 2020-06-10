@@ -49,6 +49,7 @@
             serviceCollection.AddTransient<AdminController>();
             serviceCollection.AddTransient<UsersController>();
             serviceCollection.AddTransient<OrdersController>();
+            serviceCollection.AddTransient<GamesController>();
 
             return serviceCollection.BuildServiceProvider();
         }

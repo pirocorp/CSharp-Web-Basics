@@ -71,7 +71,7 @@
                 return this.RedirectToHome();
             }
 
-            var game = this._gamesService.GetById(id);
+            var game = this._gamesService.GetById<GameDetailsModel>(id);
 
             if (game == null)
             {
@@ -110,7 +110,7 @@
                 return this.RedirectToHome();
             }
 
-            var game = this._gamesService.GetById(id);
+            var game = this._gamesService.GetById<GameDetailsModel>(id);
 
             if (game == null)
             {
@@ -131,7 +131,7 @@
                 return this.RedirectToHome();
             }
 
-            var game = this._gamesService.GetById(id);
+            var game = this._gamesService.GetById<GameDetailsModel>(id);
 
             if (game == null)
             {
@@ -142,7 +142,7 @@
             return this.RedirectToAllGames();
         }
 
-        private void SetGameViewData(Game game)
+        private void SetGameViewData(GameDetailsModel game)
         {
             this.ViewModel["title"] = game.Title;
             this.ViewModel["description"] = game.Description;

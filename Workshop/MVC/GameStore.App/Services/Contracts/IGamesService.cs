@@ -14,7 +14,7 @@
 
         void Create(string title, string description, string thumbnailUrl, decimal price, double size, string videoId, DateTime releaseDate);
 
-        Game GetById(int id);
+        TModel GetById<TModel>(int id);
 
         void Update(int id, string modelTitle, string modelDescription, string modelThumbnailUrl, decimal modelPrice, double modelSize, string modelVideoId, DateTime modelReleaseDate);
 
