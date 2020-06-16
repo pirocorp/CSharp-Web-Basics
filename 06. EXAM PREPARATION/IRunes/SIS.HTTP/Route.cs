@@ -20,9 +20,9 @@
         /// <param name="action">Routing function</param>
         public Route(HttpMethodType httpMethod, string path, Func<HttpRequest, HttpResponse> action)
         {
-            HttpMethod = httpMethod;
-            Path = path;
-            Action = action;
+            this.HttpMethod = httpMethod;
+            this.Path = path;
+            this.Action = action;
         }
 
         /// <summary>

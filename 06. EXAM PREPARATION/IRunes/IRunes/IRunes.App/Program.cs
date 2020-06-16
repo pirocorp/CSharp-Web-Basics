@@ -1,10 +1,11 @@
 ﻿namespace IRunes.App
 {
+    using System.Threading.Tasks;
     using SIS.MvcFramework;
 
     public class Program
     {
-        public async void Main()
+        public static async Task Main()
         {
             await WebHost.StartAsync(new StartUp());
         }

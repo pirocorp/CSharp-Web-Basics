@@ -13,7 +13,7 @@ namespace SIS.MvcFramework
     {
         public string GetHtml(string templateHtml, object model, string user)
         {
-            var methodCode = PrepareCSharpCode(templateHtml);
+            var methodCode = this.PrepareCSharpCode(templateHtml);
             var typeName = model?.GetType().FullName ?? "object";
             if (model?.GetType().IsGenericType == true) // null/true/false bool?
             {
@@ -43,7 +43,7 @@ namespace AppViewNamespace
     }}
 }}";
 
-            IView view = GetInstanceFromCode(code, model);
+            IView view = this.GetInstanceFromCode(code, model);
             string html = view.GetHtml(model, user);
             return html;
         }

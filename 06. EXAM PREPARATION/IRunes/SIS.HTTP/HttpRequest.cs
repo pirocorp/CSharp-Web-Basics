@@ -99,7 +99,7 @@
             // creator=Niki&tweetName=Hello!
             this.Body = bodyBuilder.ToString().TrimEnd('\r', '\n');
             this.FormData = new Dictionary<string, string>();
-            ParseData(this.FormData, this.Body);
+            this.ParseData(this.FormData, this.Body);
 
             this.Query = string.Empty;
             if (this.Path.Contains("?"))
@@ -110,7 +110,7 @@
             }
 
             this.QueryData = new Dictionary<string, string>();
-            ParseData(this.QueryData, this.Query);
+            this.ParseData(this.QueryData, this.Query);
         }
 
         private void ParseData(IDictionary<string, string> output, string input)

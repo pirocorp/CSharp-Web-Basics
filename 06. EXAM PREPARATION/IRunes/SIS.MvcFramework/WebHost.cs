@@ -53,21 +53,31 @@ namespace SIS.MvcFramework
                 {
                     string url = "/" + controller.Name.Replace("Controller", string.Empty) + "/" + action.Name;
 
-                    var attribute = action.GetCustomAttributes()
-                        .FirstOrDefault(x => x.GetType()
-                        .IsSubclassOf(typeof(HttpMethodAttribute)))
-                         as HttpMethodAttribute;
+                    var attributes = action.GetCustomAttributes()
+                        .Where(x => x.GetType().IsSubclassOf(typeof(HttpMethodAttribute)))
+                        .Select(x => x as HttpMethodAttribute)
+                        .ToArray();
+
                     var httpActionType = HttpMethodType.Get;
-                    if (attribute != null)
+
+                    if (attributes.Length > 0)
                     {
-                        httpActionType = attribute.Type;
-                        if (attribute.Url != null)
+                        foreach (var attribute in attributes)
                         {
-                            url = attribute.Url;
+                            httpActionType = attribute.Type;
+
+                            if (attribute.Url != null)
+                            {
+                                url = attribute.Url;
+                            }
+
+                            routeTable.Add(new Route(httpActionType, url, (request) => InvokeAction(request, serviceCollection, controller, action)));
                         }
                     }
-
-                    routeTable.Add(new Route(httpActionType, url, (request) => InvokeAction(request, serviceCollection, controller, action)));
+                    else
+                    {
+                        routeTable.Add(new Route(httpActionType, url, (request) => InvokeAction(request, serviceCollection, controller, action)));
+                    }
                 }
             }
         }

@@ -6,13 +6,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="ViewModels\" />
+    <Folder Include="ViewModels\Home\" />
+    <Folder Include="ViewModels\Albums\" />
+    <Folder Include="ViewModels\Tracks\" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SIS.HTTP\SIS.HTTP.csproj" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\SIS.MvcFramework\SIS.MvcFramework.csproj" />
+    <ProjectReference Include="..\IRunes.Services\IRunes.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
