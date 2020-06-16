@@ -54,9 +54,23 @@ namespace AppViewNamespace
                 .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
                 .AddReferences(MetadataReference.CreateFromFile(typeof(IView).Assembly.Location))
                 .AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location));
+            
             if (model != null)
             {
                 compilation = compilation.AddReferences(MetadataReference.CreateFromFile(model.GetType().Assembly.Location));
+
+                foreach (var property in model.GetType().GetProperties())
+                {
+                    compilation = compilation.AddReferences(MetadataReference.CreateFromFile(property.PropertyType.Assembly.Location));
+
+                    if (property.PropertyType.IsGenericType)
+                    {
+                        foreach (var generic in property.PropertyType.GetGenericArguments())
+                        {
+                            compilation = compilation.AddReferences(MetadataReference.CreateFromFile(generic.Assembly.Location));
+                        }
+                    }
+                }
             }
 
             var libraries = Assembly.Load(new AssemblyName("netstandard")).GetReferencedAssemblies();

@@ -4,8 +4,8 @@
     using System.Security.Cryptography;
     using System.Text;
     using Data;
+    using IRunes.Models;
     using Models;
-    using SIS.HTTP.Logging;
     using SIS.MvcFramework;
 
     public class UsersService : IUsersService
@@ -48,8 +48,11 @@
         public bool EmailExists(string email)
             => this._db.Users.Any(u => u.Email == email);
 
-        public string GetUsername(string userId)
-            => this._db.Users.Find(userId).Username;
+        public string GetUsername(string id)
+            => this._db.Users
+                .Where(u => u.Id == id)
+                .Select(u => u.Username)
+                .FirstOrDefault();
 
         private string Hash(string input)
         {

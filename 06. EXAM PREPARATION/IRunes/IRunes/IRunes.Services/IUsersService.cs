@@ -10,6 +10,6 @@
 
         bool EmailExists(string email);
 
-        string GetUsername(string userId);
+        string GetUsername(string id);
     }
 }

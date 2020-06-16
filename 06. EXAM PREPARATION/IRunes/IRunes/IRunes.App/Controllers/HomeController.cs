@@ -20,7 +20,7 @@
         {
             if (this.IsUserLoggedIn())
             {
-                var model = new HomeOutputUserModel()
+                var model = new IndexViewModel()
                 {
                     Username = this._usersService.GetUsername(this.User),
                 };

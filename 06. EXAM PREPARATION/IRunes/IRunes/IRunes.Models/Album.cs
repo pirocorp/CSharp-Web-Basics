@@ -8,7 +8,7 @@
     {
         public Album()
         {
-            this.Id = new Guid().ToString();
+            this.Id = Guid.NewGuid().ToString();
             this.Tracks = new HashSet<Track>();
         }
 

@@ -7,7 +7,7 @@
     {
         public Track()
         {
-            this.Id = new Guid().ToString();
+            this.Id = Guid.NewGuid().ToString();
         }
 
         public string Id { get; set; }
