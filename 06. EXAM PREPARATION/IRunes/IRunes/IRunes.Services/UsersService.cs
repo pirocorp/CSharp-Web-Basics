@@ -1,8 +1,12 @@
 ﻿namespace IRunes.Services
 {
+    using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
     using Data;
+    using Models;
+    using SIS.HTTP.Logging;
+    using SIS.MvcFramework;
 
     public class UsersService : IUsersService
     {
@@ -12,17 +16,40 @@
         {
             this._db = db;
         }
-
-
+        
         public string GetUserId(string username, string password)
         {
-            throw new System.NotImplementedException();
+            var hashedPassword = this.Hash(password);
+
+            return this._db.Users
+                .Where(u => u.Username == username 
+                         && u.Password == hashedPassword)
+                .Select(u => u.Id)
+                .FirstOrDefault();
         }
 
         public void Register(string username, string email, string password)
         {
-            throw new System.NotImplementedException();
+            var user = new User
+            {
+                Username = username,
+                Email = email,
+                Password = this.Hash(password),
+                Role = IdentityRole.User,
+            };
+
+            this._db.Users.Add(user);
+            this._db.SaveChanges();
         }
+
+        public bool UsernameExists(string username)
+            => this._db.Users.Any(u => u.Username == username);
+
+        public bool EmailExists(string email)
+            => this._db.Users.Any(u => u.Email == email);
+
+        public string GetUsername(string userId)
+            => this._db.Users.Find(userId).Username;
 
         private string Hash(string input)
         {

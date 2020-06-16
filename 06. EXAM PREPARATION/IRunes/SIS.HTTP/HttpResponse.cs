@@ -30,6 +30,7 @@
             this.Version = HttpVersionType.Http10;
             this.Headers = new List<Header>();
             this.Cookies = new List<ResponseCookie>();
+            this.Body = new byte[0];
         }
 
         //-------------- PROPERTIES --------------
