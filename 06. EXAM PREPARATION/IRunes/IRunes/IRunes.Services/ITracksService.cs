@@ -1,12 +1,13 @@
 ﻿
 namespace IRunes.Services
 {
-    using Models.Tracks;
+    using System;
+    using IRunes.Models;
 
     public interface ITracksService
     {
         void Create(string name, string link, decimal price, string albumId);
 
-        TrackDetailsServiceModel GetDetails(string trackId);
+        T GetDetails<T>(string trackId, Func<Track, T> selectFunc);
     }
 }

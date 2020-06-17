@@ -1,4 +1,4 @@
-﻿namespace IRunes.Services.Models.Albums
+﻿namespace IRunes.App.ViewModels.Albums
 {
     public class TrackAlbumDetailsViewModel
     {

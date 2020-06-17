@@ -65,20 +65,19 @@
                 return this.Redirect("/Users/Login");
             }
 
-            var serviceModel = this._tracksService.GetDetails(trackId);
+            var viewModel = this._tracksService
+                .GetDetails(trackId, x => new TrackDetailsModel()
+                {
+                    AlbumId = x.AlbumId,
+                    Link = x.Link,
+                    Name = x.Name,
+                    Price = x.Price
+                });
 
-            if (serviceModel == null)
+            if (viewModel == null)
             {
                 return this.Redirect("/Albums/All");
             }
-
-            var viewModel = new TrackDetailsViewModel()
-            {
-                AlbumId = serviceModel.AlbumId,
-                Link = serviceModel.Link,
-                Name = serviceModel.Name,
-                Price = serviceModel.Price
-            };
 
             return this.View(viewModel);
         }

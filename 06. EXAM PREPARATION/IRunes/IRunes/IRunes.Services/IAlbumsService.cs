@@ -1,14 +1,15 @@
 ﻿namespace IRunes.Services
 {
+    using System;
     using System.Collections.Generic;
-    using Models.Albums;
+    using IRunes.Models;
 
     public interface IAlbumsService
     {
         void Create(string name, string cover);
 
-        IEnumerable<AlbumInfoModel> GetAll();
+        IEnumerable<T> GetAll<T>(Func<Album, T> selectFunc);
 
-        AlbumDetailsModel GetDetails(string id);
+        T GetDetails<T>(string id, Func<Album, T> selectFunc);
     }
 }

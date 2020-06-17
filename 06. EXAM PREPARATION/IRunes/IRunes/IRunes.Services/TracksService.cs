@@ -1,9 +1,9 @@
 ﻿namespace IRunes.Services
 {
+    using System;
     using System.Linq;
     using Data;
     using IRunes.Models;
-    using Models.Tracks;
 
     public class TracksService : ITracksService
     {
@@ -36,16 +36,11 @@
             this._db.SaveChanges();
         }
 
-        public TrackDetailsServiceModel GetDetails(string trackId)
+        public T GetDetails<T>(string trackId, Func<Track, T> selectFunc)
             => this._db.Tracks
                 .Where(x => x.Id == trackId)
-                .Select(x => new TrackDetailsServiceModel()
-                {
-                    AlbumId = x.AlbumId,
-                    Link = x.Link,
-                    Name = x.Name,
-                    Price = x.Price
-                })
+                .AsEnumerable()
+                .Select(selectFunc)
                 .FirstOrDefault();
     }
 }

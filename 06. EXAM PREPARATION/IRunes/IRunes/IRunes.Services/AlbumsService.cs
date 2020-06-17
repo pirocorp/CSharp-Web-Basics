@@ -1,11 +1,11 @@
 ﻿namespace IRunes.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Data;
-    using IRunes.Models;
+    using Microsoft.EntityFrameworkCore;
     using Models;
-    using Models.Albums;
 
     public class AlbumsService : IAlbumsService
     {
@@ -29,31 +29,17 @@
             this._db.SaveChanges();
         }
 
-        public IEnumerable<AlbumInfoModel> GetAll()
+        public IEnumerable<T> GetAll<T>(Func<Album, T> selectFunc)
             => this._db.Albums
-                    .Select(a => new AlbumInfoModel()
-                    {
-                        Id = a.Id,
-                        Name = a.Name
-                    })
+                    .Select(selectFunc)
                     .ToList();
 
-        public AlbumDetailsModel GetDetails(string id)
+        public T GetDetails<T>(string id, Func<Album, T> selectFunc)
             => this._db.Albums
-                    .Where(x => x.Id == id)
-                    .Select(x => new AlbumDetailsModel()
-                    {
-                        Id = x.Id,
-                        Name = x.Name,
-                        Price = x.Price,
-                        Cover = x.Cover,
-                        Tracks = x.Tracks
-                            .Select(t => new TrackAlbumDetailsViewModel()
-                            {
-                                Id = t.Id,
-                                Name = t.Name
-                            })
-                    })
-                    .FirstOrDefault();
+                .Include(a => a.Tracks)
+                .Where(x => x.Id == id)
+                .AsEnumerable()
+                .Select(selectFunc)
+                .FirstOrDefault();
     }
 }

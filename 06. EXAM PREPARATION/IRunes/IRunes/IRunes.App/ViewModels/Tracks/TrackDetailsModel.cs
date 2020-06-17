@@ -2,7 +2,7 @@
 {
     using System.Text.RegularExpressions;
 
-    public class TrackDetailsViewModel
+    public class TrackDetailsModel
     {
         private static readonly Regex YoutubeVideoRegex = 
             new Regex(@"youtu(?:\.be|be\.com)/(?:(.*)v(/|=)|(.*/)?)(?<id>[a-zA-Z0-9-_]+)", RegexOptions.IgnoreCase);

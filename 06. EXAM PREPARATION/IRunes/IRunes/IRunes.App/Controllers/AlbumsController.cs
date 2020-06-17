@@ -25,7 +25,12 @@
 
             var viewModel = new AllAlbumsViewModel()
             {
-                Albums = this._albumsService.GetAll(),
+                Albums = this._albumsService
+                    .GetAll(a => new AlbumInfoModel()
+                        {
+                            Id = a.Id,
+                            Name = a.Name
+                        }),
             };
 
             return this.View(viewModel);
@@ -71,21 +76,20 @@
                 return this.Redirect("/Users/Login");
             }
 
-            var serviceModel = this._albumsService.GetDetails(id);
-
-            var viewModel = new AlbumDetailsViewModel()
-            {
-                Id = serviceModel.Id,
-                Name = serviceModel.Name,
-                Cover = serviceModel.Cover,
-                Price = serviceModel.Price,
-                Tracks = serviceModel.Tracks
-                    .Select(t => new TrackAlbumDetailsModel()
-                    {
-                        Id = t.Id,
-                        Name = t.Name
-                    }).ToList()
-            };
+            var viewModel = this._albumsService
+                .GetDetails(id, x => new AlbumDetailsModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Price = x.Price,
+                    Cover = x.Cover,
+                    Tracks = x.Tracks
+                        .Select(t => new TrackAlbumDetailsViewModel()
+                        {
+                            Id = t.Id,
+                            Name = t.Name
+                        })
+                });
 
             return this.View(viewModel);
         }
