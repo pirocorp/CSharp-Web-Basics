@@ -2,6 +2,7 @@
 {
     using Data;
     using Microsoft.EntityFrameworkCore;
+    using Services;
     using SIS.MvcFramework;
     using SIS.MvcFramework.DependencyContainer;
     using SIS.MvcFramework.Routing;
@@ -17,6 +18,7 @@
         //IoC
         public void ConfigureServices(IServiceProvider serviceProvider)
         {
+            serviceProvider.Add<IUsersService, UsersService>();
         }
     }
 }

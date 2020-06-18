@@ -163,6 +163,11 @@ namespace SIS.MvcFramework
 
                     this.SetResponseSession(httpResponse, sessionId);
                 }
+                else
+                {
+                    return;
+                }
+
             }
             catch (BadRequestException e)
             {
