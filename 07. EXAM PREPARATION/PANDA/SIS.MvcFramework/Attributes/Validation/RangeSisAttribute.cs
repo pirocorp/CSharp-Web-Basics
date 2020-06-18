@@ -34,19 +34,19 @@ namespace SIS.MvcFramework.Attributes.Validation
 
         public override bool IsValid(object value)
         {
-            if (objectType == typeof(int))
+            if (this.objectType == typeof(int))
             {
-                return (int) value >= (int) minValue && (int) value <= (int) maxValue;
+                return (int) value >= (int) this.minValue && (int) value <= (int) this.maxValue;
             }
 
-            if (objectType == typeof(double))
+            if (this.objectType == typeof(double))
             {
-                return (double)value >= (double)minValue && (double)value <= (double)maxValue;
+                return (double)value >= (double) this.minValue && (double)value <= (double) this.maxValue;
             }
 
-            if (objectType == typeof(decimal))
+            if (this.objectType == typeof(decimal))
             {
-                return (decimal)value >= decimal.Parse((string)minValue) && (decimal)value <= decimal.Parse((string)maxValue);
+                return (decimal)value >= decimal.Parse((string) this.minValue) && (decimal)value <= decimal.Parse((string) this.maxValue);
             }
 
             return false;

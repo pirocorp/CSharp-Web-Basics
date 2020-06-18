@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using SIS.Common;
 using SIS.HTTP.Common;
 using SIS.HTTP.Enums;
 using SIS.HTTP.Requests;
@@ -8,6 +7,8 @@ using SIS.HTTP.Responses;
 
 namespace SIS.MvcFramework.Routing
 {
+    using HTTP.Extensions;
+
     public class ServerRoutingTable : IServerRoutingTable
     {
         private readonly Dictionary<HttpRequestMethod, Dictionary<string, Func<IHttpRequest, IHttpResponse>>> routingTable;

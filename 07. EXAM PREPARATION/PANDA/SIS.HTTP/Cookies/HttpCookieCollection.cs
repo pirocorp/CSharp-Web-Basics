@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using SIS.Common;
 using SIS.HTTP.Common;
-using SIS.HTTP.Cookies.Contracts;
 
 namespace SIS.HTTP.Cookies
 {
+    using Extensions;
+
     public class HttpCookieCollection : IHttpCookieCollection
     {
         private Dictionary<string, HttpCookie> httpCookies;
@@ -51,7 +51,7 @@ namespace SIS.HTTP.Cookies
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            return this.GetEnumerator();
         }
 
         public override string ToString()

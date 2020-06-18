@@ -1,0 +1,22 @@
+﻿namespace Panda.Web
+{
+    using Data;
+    using Microsoft.EntityFrameworkCore;
+    using SIS.MvcFramework;
+    using SIS.MvcFramework.DependencyContainer;
+    using SIS.MvcFramework.Routing;
+
+    public class StartUp : IMvcApplication
+    {
+        public void Configure(IServerRoutingTable serverRoutingTable)
+        {
+            using var db = new PandaDbContext();
+            db.Database.Migrate();
+        }
+
+        //IoC
+        public void ConfigureServices(IServiceProvider serviceProvider)
+        {
+        }
+    }
+}

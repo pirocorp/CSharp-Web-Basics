@@ -20,7 +20,7 @@ namespace SIS.MvcFramework.Attributes.Validation
         {
             string valueAsString = (string)Convert.ChangeType(value, typeof(string));
 
-            return Regex.IsMatch(valueAsString, pattern);
+            return Regex.IsMatch(valueAsString, this.pattern);
         }
     }
 }

@@ -21,9 +21,9 @@ namespace SIS.MvcFramework.DependencyContainer
         // CreateInstance(typeof(HomeController))
         public object CreateInstance(Type type)
         {
-            if (dependencyContainer.ContainsKey(type))
+            if (this.dependencyContainer.ContainsKey(type))
             {
-                type = dependencyContainer[type];
+                type = this.dependencyContainer[type];
             }
 
             var constructor = type.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
@@ -38,7 +38,7 @@ namespace SIS.MvcFramework.DependencyContainer
             var parameterInstances = new List<object>();
             foreach (var parameter in parameters)
             {
-                var parameterInstance = CreateInstance(parameter.ParameterType);
+                var parameterInstance = this.CreateInstance(parameter.ParameterType);
                 parameterInstances.Add(parameterInstance);
             }
 

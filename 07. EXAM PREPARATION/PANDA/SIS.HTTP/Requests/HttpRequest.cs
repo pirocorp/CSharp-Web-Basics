@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web;
-using SIS.Common;
 using SIS.HTTP.Common;
 using SIS.HTTP.Cookies;
-using SIS.HTTP.Cookies.Contracts;
 using SIS.HTTP.Enums;
 using SIS.HTTP.Exceptions;
 using SIS.HTTP.Headers;
@@ -14,6 +12,8 @@ using SIS.HTTP.Sessions;
 
 namespace SIS.HTTP.Requests
 {
+    using Extensions;
+
     public class HttpRequest : IHttpRequest
     {
         public HttpRequest(string requestString)
@@ -80,7 +80,7 @@ namespace SIS.HTTP.Requests
 
         private void ParseRequestMethod(string[] requestLineParams)
         {
-            bool parseResult = HttpRequestMethod.TryParse(requestLineParams[0], true,
+            bool parseResult = Enum.TryParse(requestLineParams[0], true,
                 out HttpRequestMethod method);
 
             if (!parseResult)

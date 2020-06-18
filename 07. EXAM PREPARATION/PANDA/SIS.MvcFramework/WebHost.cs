@@ -1,25 +1,24 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using SIS.HTTP.Enums;
-using SIS.HTTP.Requests;
-using SIS.HTTP.Responses;
-using SIS.MvcFramework.Attributes;
-using SIS.MvcFramework.Attributes.Action;
-using SIS.MvcFramework.Attributes.Security;
-using SIS.MvcFramework.DependencyContainer;
-using SIS.MvcFramework.Logging;
-using SIS.MvcFramework.Result;
-using SIS.MvcFramework.Routing;
-using SIS.MvcFramework.Sessions;
-using IServiceProvider = SIS.MvcFramework.DependencyContainer.IServiceProvider;
-
-namespace SIS.MvcFramework
+﻿namespace SIS.MvcFramework
 {
+    using Attributes.Http;
     using Attributes.Validation;
     using Validation;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using HTTP.Enums;
+    using HTTP.Requests;
+    using HTTP.Responses;
+    using Attributes.Action;
+    using Attributes.Security;
+    using DependencyContainer;
+    using Logging;
+    using Result;
+    using Routing;
+    using Sessions;
+    using IServiceProvider = DependencyContainer.IServiceProvider;
 
     public static class WebHost
     {
@@ -81,14 +80,14 @@ namespace SIS.MvcFramework
                     serverRoutingTable.Add(httpMethod, path,
                         (request) => ProcessRequest(serviceProvider, controllerType, action, request));
 
-                    System.Console.WriteLine(httpMethod + " " + path);
+                    Console.WriteLine(httpMethod + " " + path);
                 }
             }
         }
 
         private static IHttpResponse ProcessRequest(
             IServiceProvider serviceProvider,
-            System.Type controllerType,
+            Type controllerType,
             MethodInfo action,
             IHttpRequest request)
         {
@@ -120,7 +119,7 @@ namespace SIS.MvcFramework
                     && parameter.ParameterType != typeof(string))
                 {
                     
-                    var collection = httpDataValue.Select(x => System.Convert.ChangeType(x,
+                    var collection = httpDataValue.Select(x => Convert.ChangeType(x,
                         parameter.ParameterType.GenericTypeArguments.First()));
                     parameterValues.Add(collection);
                     continue;
@@ -129,12 +128,12 @@ namespace SIS.MvcFramework
                 try
                 {
                     string httpStringValue = httpDataValue.FirstOrDefault();
-                    var parameterValue = System.Convert.ChangeType(httpStringValue, parameter.ParameterType);
+                    var parameterValue = Convert.ChangeType(httpStringValue, parameter.ParameterType);
                     parameterValues.Add(parameterValue);
                 }
                 catch
                 {
-                    var paramaterValue = System.Activator.CreateInstance(parameter.ParameterType);
+                    var paramaterValue = Activator.CreateInstance(parameter.ParameterType);
                     var properties = parameter.ParameterType.GetProperties();
 
                     foreach (var property in properties)
@@ -158,7 +157,7 @@ namespace SIS.MvcFramework
                         else
                         {
                             var firstValue = propertyHttpDataValue.FirstOrDefault();
-                            var propertyValue = System.Convert.ChangeType(firstValue, property.PropertyType);
+                            var propertyValue = Convert.ChangeType(firstValue, property.PropertyType);
                             property.SetMethod.Invoke(paramaterValue, new object[] {propertyValue});
                         }
                     }

@@ -27,7 +27,7 @@
                 else if (originProperty.PropertyType != destinationProperty.PropertyType)
                 {
                     destinationProperty.SetValue(destinationInstance,
-                        System.Convert.ChangeType(originProperty.GetValue(originInstance)
+                        Convert.ChangeType(originProperty.GetValue(originInstance)
                             , destinationProperty.PropertyType));
                 }
                 else if (originProperty.PropertyType == destinationProperty.PropertyType)

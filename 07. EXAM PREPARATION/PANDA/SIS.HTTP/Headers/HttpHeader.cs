@@ -1,8 +1,9 @@
-﻿using SIS.Common;
-using SIS.HTTP.Common;
+﻿using SIS.HTTP.Common;
 
 namespace SIS.HTTP.Headers
 {
+    using Extensions;
+
     public class HttpHeader
     {
         public const string Cookie = "Cookie";

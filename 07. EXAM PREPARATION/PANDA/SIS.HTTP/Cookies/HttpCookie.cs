@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Text;
-using SIS.Common;
 
 namespace SIS.HTTP.Cookies
 {
+    using Extensions;
+
     public class HttpCookie
     {
         private const int HttpCookieDefaultExpirationDays = 3;

@@ -48,7 +48,7 @@ namespace AppViewCodeNamespace
     {{
         public string GetHtml(object model, ModelStateDictionary modelState, Principal user)
         {{
-            var Model = {(model == null ? "new {}" : "model as " + GetModelType(model))};
+            var Model = {(model == null ? "new {}" : "model as " + this.GetModelType(model))};
             var User = user;           
             var ModelState= modelState;
 

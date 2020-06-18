@@ -2,12 +2,13 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using SIS.Common;
 using SIS.MvcFramework.Routing;
 using SIS.MvcFramework.Sessions;
 
 namespace SIS.MvcFramework
 {
+    using HTTP.Extensions;
+
     public class Server
     {
         private const string LocalHostIpAddress = "127.0.0.1";

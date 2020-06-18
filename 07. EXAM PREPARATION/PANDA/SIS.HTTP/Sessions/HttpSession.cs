@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
-using SIS.Common;
 using SIS.HTTP.Common;
 
 namespace SIS.HTTP.Sessions
 {
+    using Extensions;
+
     public class HttpSession : IHttpSession
     {
         private readonly Dictionary<string, object> sessionParameters;

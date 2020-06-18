@@ -4,7 +4,6 @@ using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using SIS.Common;
 using SIS.HTTP.Common;
 using SIS.HTTP.Cookies;
 using SIS.HTTP.Enums;
@@ -18,6 +17,8 @@ using SIS.MvcFramework.Sessions;
 
 namespace SIS.MvcFramework
 {
+    using HTTP.Extensions;
+
     public class ConnectionHandler
     {
         private readonly Socket client;

@@ -1,4 +1,4 @@
-﻿namespace SIS.Common
+﻿namespace SIS.HTTP.Extensions
 {
     using System;
 

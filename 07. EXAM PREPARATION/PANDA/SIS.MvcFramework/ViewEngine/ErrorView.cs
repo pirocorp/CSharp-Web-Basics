@@ -18,7 +18,7 @@ namespace SIS.MvcFramework.ViewEngine
 
         public string GetHtml(object model, ModelStateDictionary modelState, Principal user)
         {
-            return errors;
+            return this.errors;
         }
     }
 }

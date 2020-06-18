@@ -16,12 +16,12 @@ namespace SIS.MvcFramework.Sessions
 
         public IHttpSession GetSession(string id)
         {
-            return httpSessions.GetOrAdd(id, _ => new HttpSession(id));
+            return this.httpSessions.GetOrAdd(id, _ => new HttpSession(id));
         }
 
         public bool ContainsSession(string id)
         {
-            return httpSessions.ContainsKey(id);
+            return this.httpSessions.ContainsKey(id);
         }
     }
 }

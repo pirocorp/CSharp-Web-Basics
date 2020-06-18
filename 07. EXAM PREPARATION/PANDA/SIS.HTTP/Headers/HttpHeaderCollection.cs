@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using SIS.Common;
 using SIS.HTTP.Common;
 
 namespace SIS.HTTP.Headers
 {
+    using Extensions;
+
     public class HttpHeaderCollection : IHttpHeaderCollection
     {
         private Dictionary<string, HttpHeader> httpHeaders;
