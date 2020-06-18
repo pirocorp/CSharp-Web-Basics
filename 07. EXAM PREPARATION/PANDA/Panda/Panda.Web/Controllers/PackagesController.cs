@@ -42,7 +42,7 @@
             this.packagesService.Create(input.Description, input.Weight,
                 input.ShippingAddress, input.RecipientName);
 
-            return this.Redirect("Packages/Pending");
+            return this.Redirect("/Packages/Pending");
         }
 
         [Authorize]
