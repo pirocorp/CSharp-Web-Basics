@@ -1,5 +1,6 @@
 ﻿namespace Panda.Services
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
@@ -40,6 +41,10 @@
                 .SingleOrDefault(x => x.Username == username 
                                    && x.Password == passwordHash);
         }
+
+        public IEnumerable<string> GetUsernames()
+            => this.db.Users
+                .Select(x => x.Username);
 
         [NonAction]
         private string Hash(string input)
