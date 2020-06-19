@@ -19,6 +19,7 @@
         {
             serviceCollection.Add<IUsersService, UsersService>();
             serviceCollection.Add<ITripsService, TripsService>();
+            serviceCollection.Add<IUsersTripsService, UsersTripsService>();
         }
     }
 }
