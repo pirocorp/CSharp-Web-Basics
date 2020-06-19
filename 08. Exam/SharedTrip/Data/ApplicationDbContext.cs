@@ -4,7 +4,13 @@
     using Models;
 
     public class ApplicationDbContext : DbContext
-    { 
+    {
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<Trip> Trips { get; set; }
+
+        public DbSet<UserTrip> UsersTrips { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
