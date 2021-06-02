@@ -1,17 +1,17 @@
 ﻿namespace WebServer
 {
     using System.Threading.Tasks;
-
+    using Server.Responses;
     using WebServer.Server;
 
     public static class Startup
     {
         public static async Task Main()
-        {
-            // http://localhost:5001
-
-            var server = new HttpServer("127.0.0.1");
-            await server.Start();
-        }
+            => await new HttpServer( 
+                        routes => routes
+                            .MapGet("/", new TextResponse("Hello World!"))
+                            .MapGet("/Cats", new TextResponse("Hello from the cats!"))
+                            .MapGet("/Dogs", new TextResponse("Bark!!")))
+                    .Start();
     }
 }

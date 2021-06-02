@@ -6,6 +6,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using Http;
+    using Routing;
 
     public class HttpServer
     {
@@ -13,12 +14,22 @@
         private readonly int port;
         private readonly TcpListener listener;
 
-        public HttpServer(string ipAddress, int port = 5001)
+        public HttpServer(string ipAddress, int port, Action<IRoutingTable> route)
         {
             this.ipAddress = IPAddress.Parse(ipAddress);
             this.port = port;
 
             this.listener = new TcpListener(this.ipAddress, this.port);
+        }
+
+        public HttpServer(int port, Action<IRoutingTable> route)
+            : this("127.0.0.1", port, route)
+        {
+        }
+
+        public HttpServer(Action<IRoutingTable> route)
+            : this(5000, route)
+        {
         }
 
         public async Task Start()
@@ -36,17 +47,10 @@
                 var requestText = await this.ReadRequest(networkStream);
                 Console.WriteLine(requestText);
 
-                if (string.IsNullOrWhiteSpace(requestText))
-                {
-                    connection.Close();
-                    continue;
-                }
-
                 var request = HttpRequest.Parse(requestText);
 
                 await this.WriteResponse(networkStream);
 
-                await Task.Delay(100);
                 connection.Close();
             }
         }
@@ -59,9 +63,7 @@
             var totalBytes = 0;
             var requestBuilder = new StringBuilder();
 
-            await Task.Delay(100);
-
-            while (networkStream.DataAvailable)
+            do
             {
                 var bytesRead = await networkStream.ReadAsync(buffer, 0, bufferLength);
 
@@ -73,7 +75,8 @@
                 }
 
                 requestBuilder.Append(Encoding.UTF8.GetString(buffer, 0, bytesRead));
-            }
+            } 
+            while (networkStream.DataAvailable);
 
             return requestBuilder.ToString();
         }

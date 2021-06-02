@@ -66,13 +66,10 @@
                     throw new InvalidOperationException("Request is not valid.");
                 }
 
-                var header = new HttpHeader()
-                {
-                    Name = headerParts[0],
-                    Value = headerParts[1].Trim(),
-                };
+                var name = headerParts[0];
+                var value = headerParts[1].Trim();
 
-                headersCollection.Add(header);
+                headersCollection.Add(name, value);
             }
 
             return headersCollection;
