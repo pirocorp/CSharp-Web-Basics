@@ -1,4 +1,4 @@
-﻿namespace WebServer.Controller
+﻿namespace WebServer.App.Controller
 {
     using Server.Http;
 

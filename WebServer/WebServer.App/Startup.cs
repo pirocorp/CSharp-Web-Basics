@@ -1,8 +1,8 @@
-﻿namespace WebServer
+﻿namespace WebServer.App
 {
     using System.Threading.Tasks;
+    using Server;
     using Server.Responses;
-    using WebServer.Server;
 
     public static class Startup
     {
