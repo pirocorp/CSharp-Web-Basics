@@ -15,7 +15,9 @@
 
         public HttpMethod Method { get; private init; }
 
-        public string Url { get; private init; }
+        public string Path { get; private init; }
+
+        public Dictionary<string, string> Query { get; private init; }
 
         public HttpHeaderCollection Headers { get; private init; }
 
@@ -39,12 +41,15 @@
 
             var body = string.Join(NewLine, lines.Skip(2 + headers.Count));
 
+            var (path, query) = ParseUrl(url);
+
             return new HttpRequest()
             {
                 Body = body,
                 Headers = headers,
-                Url = url,
-                Method = method
+                Path = path,
+                Method = method,
+                Query = query
             };
         }
 
@@ -73,6 +78,25 @@
             }
 
             return headersCollection;
+        }
+
+        private static Dictionary<string, string> ParseQuery(string queryString)
+            => queryString
+                .Split("&")
+                .Select(p => p.Split("="))
+                .Where(part => part.Length == 2)
+                .ToDictionary(p => p[0], p => p[1]);
+
+        private static (string Path, Dictionary<string,string> Query) ParseUrl(string url)
+        {
+            var urlParts = url.Split("?");
+
+            var path = urlParts[0];
+            var query = urlParts.Length > 1
+                ? ParseQuery(urlParts[1])
+                : new Dictionary<string, string>();
+
+            return(path, query);
         }
     }
 }

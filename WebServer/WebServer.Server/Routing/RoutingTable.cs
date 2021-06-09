@@ -20,32 +20,27 @@
                 .ForEach(httpMethod => this.routeTable[httpMethod] = new Dictionary<string, HttpResponse>());
         }
 
-        public IRoutingTable Map(string url, HttpMethod method, HttpResponse response)
+        public IRoutingTable Map(HttpMethod method, string path, HttpResponse response)
         {
-            url = url.ToLower();
-
-            return method switch
-            {
-                HttpMethod.Get => this.MapGet(url, response),
-                _ => throw new InvalidOperationException($"Method {method} is not supported"),
-            };
-        }
-
-        public IRoutingTable MapGet(string url, HttpResponse response)
-        {
-            url = url.ToLower();
-
-            Guard.AgainstNull(url, nameof(url));
+            Guard.AgainstNull(path, nameof(path));
             Guard.AgainstNull(response, nameof(response));
 
-            this.routeTable[HttpMethod.Get][url] = response;
+            path = path.ToLower();
+
+            this.routeTable[method][path] = response;
             return this;
         }
+
+        public IRoutingTable MapGet(string path, HttpResponse response)
+            => this.Map(HttpMethod.Get, path, response);
+
+        public IRoutingTable MapPost(string path, HttpResponse response)
+            => this.Map(HttpMethod.Post, path, response);
 
         public HttpResponse MatchRequest(HttpRequest request)
         {
             var requestMethod = request.Method;
-            var requestPath = request.Url.ToLower();
+            var requestPath = request.Path.ToLower();
 
             if (!this.routeTable.ContainsKey(requestMethod) ||
                 !this.routeTable[requestMethod].ContainsKey(requestPath))
