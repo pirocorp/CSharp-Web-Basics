@@ -5,14 +5,12 @@
 
     public abstract class HttpResponse
     {
-        private readonly HttpStatusCode statusCode;
-
         protected HttpResponse(HttpStatusCode statusCode)
         {
-            this.statusCode = statusCode;
+            this.StatusCode = statusCode;
 
             this.Headers = new HttpHeaderCollection();
-            this.Headers.Add("Server", "Серверко");
+            this.Headers.Add("Server", "The Bad Server");
             this.Headers.Add("Date", DateTime.UtcNow.ToString("R"));
         }
 

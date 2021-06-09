@@ -34,7 +34,7 @@
 
             path = path.ToLower();
 
-            this.routeTable[method][path] = responseFunction;
+            this.routeTable[method][path.ToLower()] = responseFunction;
             return this;
         }
 
