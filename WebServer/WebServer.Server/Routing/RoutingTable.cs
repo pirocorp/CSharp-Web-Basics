@@ -9,35 +9,48 @@
 
     public class RoutingTable : IRoutingTable
     {
-        private readonly Dictionary<HttpMethod, Dictionary<string, HttpResponse>> routeTable;
+        private readonly Dictionary<HttpMethod, Dictionary<string, Func<HttpRequest, HttpResponse>>> routeTable;
 
         public RoutingTable()
         {
-            this.routeTable = new Dictionary<HttpMethod, Dictionary<string, HttpResponse>>();
+            this.routeTable = new ();
 
             Enum.GetValues<HttpMethod>()
                 .ToList()
-                .ForEach(httpMethod => this.routeTable[httpMethod] = new Dictionary<string, HttpResponse>());
+                .ForEach(httpMethod => this.routeTable[httpMethod] = new ());
         }
 
         public IRoutingTable Map(HttpMethod method, string path, HttpResponse response)
         {
-            Guard.AgainstNull(path, nameof(path));
             Guard.AgainstNull(response, nameof(response));
+
+            return this.Map(method, path, request => response);
+        }
+
+        public IRoutingTable Map(HttpMethod method, string path, Func<HttpRequest, HttpResponse> responseFunction)
+        {
+            Guard.AgainstNull(path, nameof(path));
+            Guard.AgainstNull(responseFunction, nameof(responseFunction));
 
             path = path.ToLower();
 
-            this.routeTable[method][path] = response;
+            this.routeTable[method][path] = responseFunction;
             return this;
         }
 
         public IRoutingTable MapGet(string path, HttpResponse response)
-            => this.Map(HttpMethod.Get, path, response);
+            => this.Map(HttpMethod.Get, path, request => response);
+
+        public IRoutingTable MapGet(string path, Func<HttpRequest, HttpResponse> responseFunction)
+            => this.Map(HttpMethod.Get, path, responseFunction);
 
         public IRoutingTable MapPost(string path, HttpResponse response)
-            => this.Map(HttpMethod.Post, path, response);
+            => this.Map(HttpMethod.Post, path, request => response);
 
-        public HttpResponse MatchRequest(HttpRequest request)
+        public IRoutingTable MapPost(string path, Func<HttpRequest, HttpResponse> responseFunction)
+            => this.Map(HttpMethod.Post, path, responseFunction);
+
+        public HttpResponse ExecuteRequest(HttpRequest request)
         {
             var requestMethod = request.Method;
             var requestPath = request.Path.ToLower();
@@ -47,8 +60,9 @@
             {
                 return new NotFoundResponse();
             }
-            
-            return this.routeTable[requestMethod][requestPath];
+
+            var responseFunction = this.routeTable[requestMethod][requestPath];
+            return responseFunction(request);
         }
     }
 }
