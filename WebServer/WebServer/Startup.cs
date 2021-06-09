@@ -8,10 +8,10 @@
     {
         public static async Task Main()
             => await new HttpServer( 
-                        routes => routes
-                            .MapGet("/", new TextResponse("Hello World!"))
-                            .MapGet("/Cats", new TextResponse("Hello from the cats!"))
-                            .MapGet("/Dogs", new TextResponse("Bark!!")))
-                    .Start();
+                    routes => routes
+                        .MapGet("/", new TextResponse("<h1>Hello World!</h1>", "text/html; charset=UTF-8"))
+                        .MapGet("/Cats", new TextResponse("Hello from the cats!"))
+                        .MapGet("/Dogs", new TextResponse("Bark!!")))
+                .Start();
     }
 }

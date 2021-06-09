@@ -9,5 +9,7 @@
         IRoutingTable MapGet(string url, HttpResponse response);
 
         // IRoutingTable MapPost(string url, HttpResponse response);
+
+        HttpResponse MatchRequest(HttpRequest request);
     }
 }
