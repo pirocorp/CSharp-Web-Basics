@@ -1,5 +1,7 @@
 ﻿namespace WebServer.Server.Controllers
 {
+    using System;
+    using System.Runtime.CompilerServices;
     using Http;
     using Responses;
 
@@ -20,5 +22,10 @@
 
         protected HttpResponse Redirect(string location)
             => new RedirectResponse(location);
+
+        protected HttpResponse View([CallerMemberName] string viewName = "")
+            => new ViewResponse(viewName, this.GetControllerName());
+
+        private string GetControllerName() => this.GetType().Name.Replace(nameof(Controller), string.Empty);
     }
 }

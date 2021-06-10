@@ -25,6 +25,10 @@
             return this.Html(result);
         }
 
-        public HttpResponse Dogs() => this.Text("Bark!!");
+        public HttpResponse Dogs() => this.View();
+
+        public HttpResponse Bunnies() => this.View("Rabbits");
+
+        public HttpResponse Turtles() => this.View("Animals/Wild/Turtles");
     }
 }

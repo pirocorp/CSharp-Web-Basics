@@ -2,6 +2,7 @@
 {
     using System;
     using System.Text;
+    using Common;
 
     public abstract class HttpResponse
     {
@@ -14,11 +15,11 @@
             this.Headers.Add("Date", DateTime.UtcNow.ToString("R"));
         }
 
-        public HttpStatusCode StatusCode { get; init; }
+        public HttpStatusCode StatusCode { get; protected set; }
 
         public HttpHeaderCollection Headers { get; }
 
-        public string Content { get; init; }
+        public string Content { get; protected set; }
 
         public override string ToString()
         {
@@ -39,6 +40,19 @@
             }
 
             return result.ToString();
+        }
+
+        protected void PrepareContent(string content, string contentType)
+        {
+            Guard.AgainstNull(content, nameof(content));
+            Guard.AgainstNull(contentType, nameof(contentType));
+
+            var contentLength = Encoding.UTF8.GetByteCount(content).ToString();
+
+            this.Headers.Add("Content-Type", contentType);
+            this.Headers.Add("Content-Length", contentLength);
+
+            this.Content = content;
         }
     }
 }

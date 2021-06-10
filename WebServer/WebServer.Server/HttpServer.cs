@@ -51,6 +51,11 @@
 
                 var requestText = await this.ReadRequest(networkStream);
 
+                if (string.IsNullOrWhiteSpace(requestText))
+                {
+                    continue;
+                }
+
                 var request = HttpRequest.Parse(requestText);
 
                 var response = this.routingTable.ExecuteRequest(request);

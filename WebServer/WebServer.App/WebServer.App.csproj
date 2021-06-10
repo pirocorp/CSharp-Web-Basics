@@ -9,4 +9,21 @@
     <ProjectReference Include="..\WebServer.Server\WebServer.Server.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Views\Animals\Dogs.cshtml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="views\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Views\Animals\Rabbits.cshtml" />
+    <None Remove="Views\Animals\Wild\Turtles.cshtml" />
+  </ItemGroup>
+
 </Project>
