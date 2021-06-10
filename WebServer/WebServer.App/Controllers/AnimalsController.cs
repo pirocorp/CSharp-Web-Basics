@@ -29,6 +29,6 @@
 
         public HttpResponse Bunnies() => this.View("Rabbits");
 
-        public HttpResponse Turtles() => this.View("Animals/Wild/Turtles");
+        public HttpResponse Turtles() => this.View("Animals/Wild/Turtles2");
     }
 }

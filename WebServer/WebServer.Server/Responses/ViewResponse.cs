@@ -23,12 +23,21 @@
 
             if (!File.Exists(viewPath))
             {
-                this.StatusCode = HttpStatusCode.NotFound;
+                this.PrepareMissingViewError(viewPath);
                 return;
             }
 
             var viewContent = File.ReadAllText(viewPath);
             this.PrepareContent(viewContent, HttpContentType.Html);
+        }
+
+        private void PrepareMissingViewError(string viewPath)
+        {
+            this.StatusCode = HttpStatusCode.NotFound;
+
+            var errorMessage = $"View '{viewPath}' was not found.";
+
+            this.PrepareContent(errorMessage, HttpContentType.PlainText);
         }
     }
 }
