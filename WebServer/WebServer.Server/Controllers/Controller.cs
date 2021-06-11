@@ -16,19 +16,19 @@
 
         public HttpResponse Response { get; private init; }    
 
-        protected HttpResponse Text(string text)
+        protected ActionResult Text(string text)
             => new TextResult(this.Response, text);
 
-        protected HttpResponse Html(string html)
+        protected ActionResult Html(string html)
             => new HtmlResult(this.Response, html);
 
-        protected HttpResponse Redirect(string location)
+        protected ActionResult Redirect(string location)
             => new RedirectResult(this.Response, location);
 
-        protected HttpResponse View([CallerMemberName] string viewName = default)
+        protected ActionResult View([CallerMemberName] string viewName = default)
             => this.View(null, viewName);
 
-        protected HttpResponse View(object model, [CallerMemberName] string viewName = default)
+        protected ActionResult View(object model, [CallerMemberName] string viewName = default)
             => new ViewResult(this.Response, viewName, this.GetControllerName(), model);
 
         private string GetControllerName() => this.GetType().Name.Replace(nameof(Controller), string.Empty);

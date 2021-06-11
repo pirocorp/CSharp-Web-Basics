@@ -3,6 +3,7 @@
     using Models.Animals;
     using Server.Controllers;
     using Server.Http;
+    using Server.Results;
 
     public class AnimalsController : Controller
     {
@@ -11,7 +12,7 @@
         {
         }
 
-        public HttpResponse Cats()
+        public ActionResult Cats()
         {
             const string nameKey = "name";
             const string ageKey = "age";
@@ -35,10 +36,10 @@
             return this.View(model);
         }
 
-        public HttpResponse Dogs() => this.View();
+        public ActionResult Dogs() => this.View();
 
-        public HttpResponse Bunnies() => this.View("Rabbits");
+        public ActionResult Bunnies() => this.View("Rabbits");
 
-        public HttpResponse Turtles() => this.View("Animals/Wild/Turtles2");
+        public ActionResult Turtles() => this.View("Animals/Wild/Turtles2");
     }
 }

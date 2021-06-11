@@ -1,5 +1,6 @@
 ﻿namespace WebServer.App
 {
+    using System.Net;
     using System.Threading.Tasks;
     using Controllers;
     using Server;
@@ -18,7 +19,8 @@
                         .MapGet<AnimalsController>("/Turtle", c => c.Turtles())
                         .MapGet<AnimalsController>("/Bunny", c => c.Bunnies())
                         .MapGet<CatsController>("/Cats/Create", c => c.Create())
-                        .MapPost<CatsController>("/Cats/Save", c => c.Save()))
+                        .MapPost<CatsController>("/Cats/Save", c => c.Save())
+                        .MapGet<AccountController>("/cookie", c => c.ActionWithCookie()))
                 .Start();
     }
 }

@@ -2,6 +2,7 @@
 {
     using Server.Controllers;
     using Server.Http;
+    using Server.Results;
 
     public class CatsController : Controller
     {
@@ -10,9 +11,9 @@
         {
         }
 
-        public HttpResponse Create() => this.View();
+        public ActionResult Create() => this.View();
 
-        public HttpResponse Save()
+        public ActionResult Save()
         {
             var name = this.Request.Form["Name"];
             var age = this.Request.Form["Age"];

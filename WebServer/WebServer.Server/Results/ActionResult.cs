@@ -18,7 +18,7 @@
         {
             foreach (var header in headers)
             {
-                this.Headers.Add(header.Key, header.Value);
+                this.Headers[header.Key] = header.Value;
             }
         }
 
@@ -26,7 +26,7 @@
         {
             foreach (var cookie in cookies)
             {
-                this.Cookies.Add(cookie.Key, cookie.Value);
+                this.Cookies[cookie.Key] = cookie.Value;
             }
         }
     }
