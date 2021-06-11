@@ -10,16 +10,17 @@
 
         public HttpRequest()
         {
-            this.Headers = new HttpHeaderCollection();
         }
 
         public HttpMethod Method { get; private init; }
 
         public string Path { get; private init; }
 
-        public Dictionary<string, string> Query { get; private init; }
+        public IReadOnlyDictionary<string, string> Query { get; private init; }
 
-        public HttpHeaderCollection Headers { get; private init; }
+        public IReadOnlyDictionary<string, string> Form { get; private init; }
+
+        public IReadOnlyDictionary<string, HttpHeader> Headers { get; private init; }
 
         public string Body { get; private init; }
 
@@ -43,19 +44,22 @@
 
             var (path, query) = ParseUrl(url);
 
+            var form = ParseForm(headers, body);
+
             return new HttpRequest()
             {
                 Body = body,
                 Headers = headers,
                 Path = path,
                 Method = method,
-                Query = query
+                Query = query,
+                Form = form,
             };
         }
 
-        private static HttpHeaderCollection ParseHttpHeaders(IEnumerable<string> headerLines)
+        private static Dictionary<string, HttpHeader> ParseHttpHeaders(IEnumerable<string> headerLines)
         {
-            var headersCollection = new HttpHeaderCollection();
+            var headersCollection = new Dictionary<string, HttpHeader>();
 
             foreach (var headerLine in headerLines)
             {
@@ -74,7 +78,9 @@
                 var name = headerParts[0];
                 var value = headerParts[1].Trim();
 
-                headersCollection.Add(name, value);
+                var header = new HttpHeader(name, value);
+
+                headersCollection.Add(name, header);
             }
 
             return headersCollection;
@@ -97,6 +103,19 @@
                 : new Dictionary<string, string>();
 
             return (path, query);
+        }
+
+        private static Dictionary<string, string> ParseForm(Dictionary<string, HttpHeader> headers, string body)
+        {
+            var result = new Dictionary<string, string>();
+
+            if (headers.ContainsKey(HttpHeader.ContentType)
+                && headers[HttpHeader.ContentType].Value == HttpContentType.FormUrlEncoded)
+            {
+
+            }
+
+            return result;
         }
     }
 }
