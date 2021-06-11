@@ -1,7 +1,6 @@
 ﻿namespace WebServer.Server.Routing
 {
     using System;
-    using Controllers;
     using Http;
 
     public interface IRoutingTable

@@ -8,10 +8,6 @@
     {
         private const string NewLine = "\r\n";
 
-        public HttpRequest()
-        {
-        }
-
         public HttpMethod Method { get; private init; }
 
         public string Path { get; private init; }
@@ -21,6 +17,8 @@
         public IReadOnlyDictionary<string, string> Form { get; private init; }
 
         public IReadOnlyDictionary<string, HttpHeader> Headers { get; private init; }
+
+        public IReadOnlyDictionary<string, HttpCookie> Cookies { get; private init; }
 
         public string Body { get; private init; }
 
@@ -112,7 +110,7 @@
             if (headers.ContainsKey(HttpHeader.ContentType)
                 && headers[HttpHeader.ContentType].Value == HttpContentType.FormUrlEncoded)
             {
-
+                result = ParseQuery(body);
             }
 
             return result;

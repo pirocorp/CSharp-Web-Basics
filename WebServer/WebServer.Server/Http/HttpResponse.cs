@@ -5,13 +5,15 @@
     using System.Text;
     using Common;
 
-    public abstract class HttpResponse
+    public class HttpResponse
     {
-        protected HttpResponse(HttpStatusCode statusCode)
+        public HttpResponse(HttpStatusCode statusCode)
         {
             this.StatusCode = statusCode;
 
             this.Headers = new Dictionary<string, HttpHeader>();
+            this.Cookies = new Dictionary<string, HttpCookie>();
+
             this.Headers.Add(HttpHeader.Server, new HttpHeader(HttpHeader.Server, "The Bad Server"));
             this.Headers.Add(HttpHeader.Date, new HttpHeader(HttpHeader.Date, DateTime.UtcNow.ToString("R")));
         }
@@ -19,6 +21,8 @@
         public HttpStatusCode StatusCode { get; protected set; }
 
         public IDictionary<string, HttpHeader> Headers { get; }
+
+        public IDictionary<string, HttpCookie> Cookies { get; }
 
         public string Content { get; protected set; }
 

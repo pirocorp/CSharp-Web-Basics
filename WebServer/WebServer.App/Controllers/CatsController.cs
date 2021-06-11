@@ -11,5 +11,13 @@
         }
 
         public HttpResponse Create() => this.View();
+
+        public HttpResponse Save()
+        {
+            var name = this.Request.Form["Name"];
+            var age = this.Request.Form["Age"];
+
+            return this.Text($"{name} - {age}");
+        }
     }
 }
