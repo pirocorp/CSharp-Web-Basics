@@ -1,6 +1,5 @@
 ﻿namespace WebServer.App
 {
-    using System.Net;
     using System.Threading.Tasks;
     using Controllers;
     using Server;

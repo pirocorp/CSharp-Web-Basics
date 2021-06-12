@@ -6,7 +6,14 @@
 
     public class HttpRequest
     {
+        private static readonly IDictionary<string, HttpSession> SessionsStore;
+
         private const string NewLine = "\r\n";
+
+        static HttpRequest()
+        {
+            SessionsStore = new Dictionary<string, HttpSession>();
+        }
 
         public HttpMethod Method { get; private init; }
 
@@ -14,13 +21,15 @@
 
         public IReadOnlyDictionary<string, string> Query { get; private init; }
 
-        public IReadOnlyDictionary<string, string> Form { get; private init; }
-
         public IReadOnlyDictionary<string, HttpHeader> Headers { get; private init; }
 
         public IReadOnlyDictionary<string, HttpCookie> Cookies { get; private init; }
 
+        public IReadOnlyDictionary<string, string> Form { get; private init; }
+
         public string Body { get; private init; }
+
+        public HttpSession Session { get; private set; }
 
         public static HttpRequest Parse(string request)
         {
@@ -40,6 +49,8 @@
 
             var cookies = ParseCookies(headers);
 
+            var session = GetSession(cookies);
+
             var body = string.Join(NewLine, lines.Skip(2 + headers.Count));
 
             var (path, query) = ParseUrl(url);
@@ -53,6 +64,7 @@
                 Query = query,
                 Headers = headers,
                 Cookies = cookies,
+                Session = session,
                 Body = body,
                 Form = form,
             };
@@ -128,6 +140,20 @@
                 : new Dictionary<string, string>();
 
             return (path, query);
+        }
+
+        private static HttpSession GetSession(IReadOnlyDictionary<string, HttpCookie> cookies)
+        {
+            var sessionId = cookies.ContainsKey(HttpSession.SessionCookieName)
+                ? cookies[HttpSession.SessionCookieName].Value
+                : Guid.NewGuid().ToString();
+
+            if (!SessionsStore.ContainsKey(sessionId))
+            {
+                SessionsStore[sessionId] = new HttpSession(sessionId);
+            }
+
+            return SessionsStore[sessionId];
         }
 
         private static Dictionary<string, string> ParseForm(Dictionary<string, HttpHeader> headers, string body)

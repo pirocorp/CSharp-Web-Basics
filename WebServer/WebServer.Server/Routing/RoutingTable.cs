@@ -5,7 +5,6 @@
     using System.Linq;
     using Common;
     using Http;
-    using Results;
 
     public class RoutingTable : IRoutingTable
     {
