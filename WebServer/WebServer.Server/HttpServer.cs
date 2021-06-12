@@ -7,6 +7,7 @@
     using System.Threading.Tasks;
     using Http;
     using Routing;
+    using HttpStatusCode = Http.HttpStatusCode;
 
     public class HttpServer
     {
@@ -51,18 +52,20 @@
 
                 var requestText = await this.ReadRequest(networkStream);
 
-                if (string.IsNullOrWhiteSpace(requestText))
+                try
                 {
-                    continue;
+                    var request = HttpRequest.Parse(requestText);
+
+                    var response = this.routingTable.ExecuteRequest(request);
+
+                    this.PrepareSession(request, response);
+
+                    await this.WriteResponse(networkStream, response);
                 }
-
-                var request = HttpRequest.Parse(requestText);
-
-                var response = this.routingTable.ExecuteRequest(request);
-
-                this.PrepareSession(request, response);
-
-                await this.WriteResponse(networkStream, response);
+                catch (Exception exception)
+                {
+                    await this.HandleError(networkStream, exception);
+                }
 
                 connection.Close();
             }
@@ -96,6 +99,15 @@
 
         private void PrepareSession(HttpRequest request, HttpResponse response)
             => response.AddCookie(HttpSession.SessionCookieName, request.Session.Id);
+
+        private async Task HandleError(NetworkStream networkStream, Exception exception)
+        {
+            var errorMessage = $"{exception.Message} {Environment.NewLine} {exception.StackTrace}";
+
+            var errorResponse = HttpResponse.ErrorResponse(errorMessage);
+
+            await this.WriteResponse(networkStream, errorResponse);
+        }
 
         private async Task WriteResponse(NetworkStream networkStream, HttpResponse response)
         {

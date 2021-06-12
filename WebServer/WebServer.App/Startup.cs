@@ -13,6 +13,7 @@
                         .MapGet<HomeController>("/", c => c.Index())
                         .MapGet<HomeController>("/softuni", c => c.ToSoftUni())
                         .MapGet<HomeController>("/local", c => c.ToLocal())
+                        .MapGet<HomeController>("/error", c => c.Error())
                         .MapGet<AnimalsController>("/Cats", c => c.Cats())
                         .MapGet<AnimalsController>("/Dogs", c => c.Dogs())
                         .MapGet<AnimalsController>("/Turtle", c => c.Turtles())

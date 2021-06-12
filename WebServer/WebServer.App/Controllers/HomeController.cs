@@ -1,5 +1,6 @@
 ﻿namespace WebServer.App.Controllers
 {
+    using System;
     using Server.Controllers;
     using Server.Http;
 
@@ -16,5 +17,7 @@
         public HttpResponse ToLocal() => this.Redirect("http://127.0.0.1:5000/cats");
 
         public HttpResponse ToSoftUni() => this.Redirect("https://softuni.bg");
+
+        public HttpResponse Error() => throw new InvalidOperationException("Test error handling exceptions!");
     }
 }
