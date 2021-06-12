@@ -60,6 +60,8 @@
 
                     this.PrepareSession(request, response);
 
+                    this.LogPipeline(requestText, response);
+
                     await this.WriteResponse(networkStream, response);
                 }
                 catch (Exception exception)
@@ -102,11 +104,31 @@
 
         private async Task HandleError(NetworkStream networkStream, Exception exception)
         {
-            var errorMessage = $"{exception.Message} {Environment.NewLine} {exception.StackTrace}";
+            var errorMessage = $"{exception.Message}{Environment.NewLine}{exception.StackTrace}";
 
             var errorResponse = HttpResponse.ErrorResponse(errorMessage);
 
             await this.WriteResponse(networkStream, errorResponse);
+        }
+
+        private void LogPipeline(string request, HttpResponse response)
+        {
+            var separator = new string('-', 50);
+
+            var log = new StringBuilder();
+
+            log.AppendLine();
+            log.AppendLine(separator);
+
+            log.AppendLine("REQUEST");
+            log.AppendLine(request);
+
+            log.AppendLine();
+
+            log.AppendLine("RESPONSE");
+            log.AppendLine(response.ToString());
+
+            Console.WriteLine(log);
         }
 
         private async Task WriteResponse(NetworkStream networkStream, HttpResponse response)
