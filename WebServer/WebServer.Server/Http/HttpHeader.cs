@@ -6,9 +6,11 @@
     {
         public const string ContentType = "Content-Type";
         public const string ContentLength = "Content-Length";
+        public const string Cookie = "Cookie"; // Request Header
         public const string Date = "Date";
         public const string Location = "Location";
         public const string Server = "Server";
+        public const string SetCookie = "Set-Cookie"; // Response Header
 
         public HttpHeader(string name, string value)
         {

@@ -36,7 +36,9 @@
                 throw new InvalidOperationException($"Method '{method}' is not supported.");
             }
 
-            var headers = ParseHttpHeaders(lines.Skip(1));
+            var headers = ParseHeaders(lines.Skip(1));
+
+            var cookies = ParseCookies(headers);
 
             var body = string.Join(NewLine, lines.Skip(2 + headers.Count));
 
@@ -46,16 +48,17 @@
 
             return new HttpRequest()
             {
-                Body = body,
-                Headers = headers,
-                Path = path,
                 Method = method,
+                Path = path,
                 Query = query,
+                Headers = headers,
+                Cookies = cookies,
+                Body = body,
                 Form = form,
             };
         }
 
-        private static Dictionary<string, HttpHeader> ParseHttpHeaders(IEnumerable<string> headerLines)
+        private static Dictionary<string, HttpHeader> ParseHeaders(IEnumerable<string> headerLines)
         {
             var headersCollection = new Dictionary<string, HttpHeader>();
 
@@ -82,6 +85,30 @@
             }
 
             return headersCollection;
+        }
+
+        private static IReadOnlyDictionary<string, HttpCookie> ParseCookies(Dictionary<string, HttpHeader> headers)
+        {
+            var cookieCollection = new Dictionary<string, HttpCookie>();
+
+            if (!headers.ContainsKey(HttpHeader.Cookie))
+            {
+                return cookieCollection;
+            }
+
+            headers[HttpHeader.Cookie].Value
+                .Split(";")
+                .Select(c => c.Split("=", 2))
+                .Where(cp => cp.Length == 2)
+                .Select(cp => new
+                {
+                    Name = cp[0].Trim(),
+                    Value = cp[1].Trim()
+                })
+                .ToList()
+                .ForEach(c => cookieCollection.Add(c.Name, new HttpCookie(c.Name, c.Value)));
+
+            return cookieCollection;
         }
 
         private static Dictionary<string, string> ParseQuery(string queryString)

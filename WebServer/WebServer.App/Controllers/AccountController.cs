@@ -13,9 +13,19 @@
 
         public ActionResult ActionWithCookie()
         {
-            this.Response.AddCookie("My-Cookie", "My-Value");
+            const string cookieName = "My-Cookie";
 
-            return this.Text("Hello with cookie");
+            if (this.Request.Cookies.ContainsKey(cookieName))
+            {
+                var cookie = this.Request.Cookies[cookieName];
+
+                return this.Text($"Hello with cookie! - {cookie}");
+            }
+
+            this.Response.AddCookie(cookieName, "My-Value");
+            this.Response.AddCookie("My-Second-Cookie", "My-Second-Value");
+
+            return this.Text("Cookies set!");
         }
     }
 }
