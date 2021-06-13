@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using Common;
     using Http;
+    using Results;
 
     public class RoutingTable : IRoutingTable
     {
@@ -17,6 +19,36 @@
             Enum.GetValues<HttpMethod>()
                 .ToList()
                 .ForEach(httpMethod => this.routeTable[httpMethod] = new ());
+        }
+
+        public IRoutingTable MapStaticFiles(string folder = Settings.StaticFilesRootFolder)
+        {
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var staticFilesFolder = Path.Combine(currentDirectory, folder);
+
+            var staticFiles = Directory.GetFiles(
+                staticFilesFolder, 
+                "*.*", 
+                SearchOption.AllDirectories);
+
+            foreach (var file in staticFiles)
+            {
+                var relativePath = Path.GetRelativePath(staticFilesFolder, file);
+
+                var urlPath = "/" + relativePath.Replace("\\", "/");
+
+                this.MapGet(urlPath, request =>
+                {
+                    var content = File.ReadAllText(file);
+                    var fileExtension = Path.GetExtension(file).Trim('.');
+                    var contentType = HttpContentType.GetByFileExtension(fileExtension);
+
+                    return new HttpResponse(HttpStatusCode.OK)
+                        .SetContent(content, contentType);
+                });
+            }
+
+            return this;
         }
 
         public IRoutingTable Map(HttpMethod method, string path, HttpResponse response)

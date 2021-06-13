@@ -10,7 +10,7 @@
             string contentType)
             : base(response)
         {
-            this.PrepareContent(content, contentType);
+            this.SetContent(content, contentType);
         }
     }
 }

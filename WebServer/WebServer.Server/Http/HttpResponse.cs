@@ -28,9 +28,22 @@
 
         public static HttpResponse ErrorResponse(string message)
             => new HttpResponse(HttpStatusCode.InternalServerError)
-            {
-                Content = message
-            };
+                .SetContent(message, HttpContentType.PlainText);
+
+        public HttpResponse SetContent(string content, string contentType)
+        {
+            Guard.AgainstNull(content, nameof(content));
+            Guard.AgainstNull(contentType, nameof(contentType));
+
+            var contentLength = Encoding.UTF8.GetByteCount(content).ToString();
+
+            this.AddHeader(HttpHeader.ContentType, contentType);
+            this.AddHeader(HttpHeader.ContentLength, contentLength);
+
+            this.Content = content;
+
+            return this;
+        }
 
         public void AddHeader(string name, string value)
         {
@@ -72,19 +85,6 @@
             }
 
             return result.ToString();
-        }
-
-        protected void PrepareContent(string content, string contentType)
-        {
-            Guard.AgainstNull(content, nameof(content));
-            Guard.AgainstNull(contentType, nameof(contentType));
-
-            var contentLength = Encoding.UTF8.GetByteCount(content).ToString();
-
-            this.AddHeader(HttpHeader.ContentType, contentType);
-            this.AddHeader(HttpHeader.ContentLength, contentLength);
-
-            this.Content = content;
         }
     }
 }

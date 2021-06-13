@@ -10,10 +10,12 @@
         public static async Task Main()
             => await new HttpServer( 
                     routes => routes
+                        .MapStaticFiles()
                         .MapGet<HomeController>("/", c => c.Index())
                         .MapGet<HomeController>("/softuni", c => c.ToSoftUni())
                         .MapGet<HomeController>("/local", c => c.ToLocal())
                         .MapGet<HomeController>("/error", c => c.Error())
+                        .MapGet<HomeController>("/staticFiles", c => c.StaticFiles())
                         .MapGet<AnimalsController>("/Cats", c => c.Cats())
                         .MapGet<AnimalsController>("/Dogs", c => c.Dogs())
                         .MapGet<AnimalsController>("/Turtle", c => c.Turtles())

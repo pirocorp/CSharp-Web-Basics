@@ -1,11 +1,27 @@
 ﻿namespace WebServer.Server.Http
 {
-    public static class HttpContentType
+    using System;
+
+    public class HttpContentType
     {
-        public const string PlainText = "text/plain; charset=UTF-8";
+        public static readonly string PlainText = $"text/plain; {UTF8Charset}";
+        public static readonly string Html = $"text/html; {UTF8Charset}";
+        public static readonly string Css = "text/css";
+        public static readonly string Js = "application/javascript";
+        public static readonly string Jpg = "image/jpeg";
+        public static readonly string Png = "image/png";
+        public static readonly string FormUrlEncoded = "application/x-www-form-urlencoded";
 
-        public const string Html = "text/html; charset=UTF-8";
+        private const string UTF8Charset = "charset=UTF-8";
 
-        public const string FormUrlEncoded = "application/x-www-form-urlencoded";
+        public static string GetByFileExtension(string fileExtension)
+            => fileExtension.ToLower() switch
+            {
+                "css" => Css,
+                "js" => Js,
+                "jpg" or "jpeg" => Jpg,
+                "png" => Png,
+                _ => PlainText
+            };
     }
 }
