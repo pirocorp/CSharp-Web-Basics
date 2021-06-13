@@ -20,8 +20,11 @@
                         .MapGet<AnimalsController>("/Bunny", c => c.Bunnies())
                         .MapGet<CatsController>("/Cats/Create", c => c.Create())
                         .MapPost<CatsController>("/Cats/Save", c => c.Save())
-                        .MapGet<AccountController>("/cookie", c => c.ActionWithCookie())
-                        .MapGet<AccountController>("/session", c => c.ActionWithSession()))
+                        .MapGet<AccountController>("/cookie", c => c.CookiesCheck())
+                        .MapGet<AccountController>("/session", c => c.SessionCheck())
+                        .MapGet<AccountController>("/login", c => c.Login())
+                        .MapGet<AccountController>("/logout", c => c.Logout())
+                        .MapGet<AccountController>("/authentication", c => c.AuthenticationCheck()))
                 .Start();
     }
 }

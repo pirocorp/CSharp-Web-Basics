@@ -12,7 +12,43 @@
         {
         }
 
-        public ActionResult ActionWithCookie()
+        public ActionResult Login()
+        {
+            // var user = this.db.Users.Find(username, password);
+            //
+            // if(user != null)
+            // {
+            //     this.SignIn(user.Id);
+            //
+            //     return Text("User authenticated!");
+            // }
+            //
+            // return Text("Invalid Credentials!");
+
+            var someUserId = Guid.NewGuid().ToString();
+            this.SignIn(someUserId);
+
+            return this.Text("User authenticated!");
+        }
+
+        public ActionResult Logout()
+        {
+            this.SignOut();
+
+            return this.Text("User signed out!");
+        }
+
+        public ActionResult AuthenticationCheck()
+        {
+            if (this.User.IsAuthenticated)
+            {
+                return this.Text($"Authenticated user: {this.User.Id}");
+            }
+
+            return this.Text($"User is not authenticated!");
+        }
+
+        public ActionResult CookiesCheck()
         {
             const string cookieName = "My-Cookie";
 
@@ -29,7 +65,7 @@
             return this.Text("Cookies set!");
         }
 
-        public ActionResult ActionWithSession()
+        public ActionResult SessionCheck()
         {
             const string currentDateKey = "CurrentDate";
 
