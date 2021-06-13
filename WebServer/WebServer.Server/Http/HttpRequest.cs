@@ -150,7 +150,10 @@
 
             if (!SessionsStore.ContainsKey(sessionId))
             {
-                SessionsStore[sessionId] = new HttpSession(sessionId);
+                SessionsStore[sessionId] = new HttpSession(sessionId)
+                {
+                    IsNew = true
+                };
             }
 
             return SessionsStore[sessionId];

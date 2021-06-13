@@ -17,9 +17,11 @@
             this.data = new Dictionary<string, string>();
         }
 
-        public int Count => this.data.Count;
+        public bool IsNew { get; set; }
 
         public string Id { get; private init; }
+
+        public int Count => this.data.Count;
 
         public string this[string key]
         {

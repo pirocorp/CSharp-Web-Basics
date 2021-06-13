@@ -3,7 +3,6 @@
     using System;
     using System.Net;
     using System.Net.Sockets;
-    using System.Runtime.InteropServices.ComTypes;
     using System.Text;
     using System.Threading.Tasks;
     using Http;
@@ -104,7 +103,13 @@
         }
 
         private void PrepareSession(HttpRequest request, HttpResponse response)
-            => response.AddCookie(HttpSession.SessionCookieName, request.Session.Id);
+        {
+            if (request.Session.IsNew)
+            {
+                response.AddCookie(HttpSession.SessionCookieName, request.Session.Id);
+                request.Session.IsNew = false;
+            }
+        }
 
         private async Task HandleError(NetworkStream networkStream, Exception exception)
         {
