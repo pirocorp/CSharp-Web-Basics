@@ -41,7 +41,15 @@
 
                 var responseFunction = GetResponseFunction(controllerType, controllerAction, path);
 
-                routingTable.MapGet(path, responseFunction);
+                var httpMethod = HttpMethod.Get;
+                var httpMethodAttribute = controllerAction.GetCustomAttribute<HttpMethodAttribute>();
+
+                if (httpMethodAttribute != null)
+                {
+                    httpMethod = httpMethodAttribute.HttpMethod;
+                }
+
+                routingTable.Map(httpMethod, path, responseFunction);
 
                 MapDefaultRoutes(routingTable, controllerName, actionName, responseFunction);
             }

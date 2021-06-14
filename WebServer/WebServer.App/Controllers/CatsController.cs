@@ -11,8 +11,10 @@
         {
         }
 
+        [HttpGet]
         public HttpResponse Create() => this.View();
 
+        [HttpPost]
         public HttpResponse Save()
         {
             var name = this.Request.Form["Name"];

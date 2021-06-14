@@ -12,8 +12,7 @@
                     routes => routes
                         .MapStaticFiles()
                         .MapControllers()
-                        .MapGet<HomeController>("/local", c => c.ToLocal())
-                        .MapPost<CatsController>("/Cats/Save", c => c.Save()))
+                        .MapGet<HomeController>("/local", c => c.ToLocal()))
                 .Start();
     }
 }
