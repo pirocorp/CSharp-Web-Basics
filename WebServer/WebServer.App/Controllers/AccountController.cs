@@ -12,7 +12,7 @@
         {
         }
 
-        public ActionResult Login()
+        public HttpResponse Login()
         {
             // var user = this.db.Users.Find(username, password);
             //
@@ -31,14 +31,14 @@
             return this.Text("User authenticated!");
         }
 
-        public ActionResult Logout()
+        public HttpResponse Logout()
         {
             this.SignOut();
 
             return this.Text("User signed out!");
         }
 
-        public ActionResult AuthenticationCheck()
+        public HttpResponse AuthenticationCheck()
         {
             if (this.User.IsAuthenticated)
             {
@@ -48,7 +48,7 @@
             return this.Text($"User is not authenticated!");
         }
 
-        public ActionResult CookiesCheck()
+        public HttpResponse CookiesCheck()
         {
             const string cookieName = "My-Cookie";
 
@@ -65,7 +65,7 @@
             return this.Text("Cookies set!");
         }
 
-        public ActionResult SessionCheck()
+        public HttpResponse SessionCheck()
         {
             const string currentDateKey = "CurrentDate";
 

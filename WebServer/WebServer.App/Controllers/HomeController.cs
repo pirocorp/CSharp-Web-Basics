@@ -12,15 +12,15 @@
         {
         }
 
-        public ActionResult Index()
+        public HttpResponse Index()
             => this.Html("<h1>Hello World!</h1>");
 
-        public ActionResult ToLocal() => this.Redirect("http://127.0.0.1:5000/cats");
+        public HttpResponse ToLocal() => this.Redirect("http://127.0.0.1:5000/animals/cats");
 
-        public ActionResult ToSoftUni() => this.Redirect("https://softuni.bg");
+        public HttpResponse ToSoftUni() => this.Redirect("https://softuni.bg");
 
-        public ActionResult StaticFiles() => this.View();
+        public HttpResponse StaticFiles() => this.View();
 
-        public ActionResult Error() => throw new InvalidOperationException("Test error handling exceptions!");
+        public HttpResponse Error() => throw new InvalidOperationException("Test error handling exceptions!");
     }
 }

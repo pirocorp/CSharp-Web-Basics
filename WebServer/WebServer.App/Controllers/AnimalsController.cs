@@ -12,7 +12,7 @@
         {
         }
 
-        public ActionResult Cats()
+        public HttpResponse Cats()
         {
             const string nameKey = "name";
             const string ageKey = "age";
@@ -36,10 +36,10 @@
             return this.View(model);
         }
 
-        public ActionResult Dogs() => this.View();
+        public HttpResponse Dogs() => this.View();
 
-        public ActionResult Bunnies() => this.View("Rabbits");
+        public HttpResponse Bunnies() => this.View("Rabbits");
 
-        public ActionResult Turtles() => this.View("Animals/Wild/Turtles2");
+        public HttpResponse Turtles() => this.View("Animals/Wild/Turtles2");
     }
 }

@@ -50,8 +50,6 @@
             => this.View(null, viewName);
 
         protected ActionResult View(object model, [CallerMemberName] string viewName = default)
-            => new ViewResult(this.Response, viewName, this.GetControllerName(), model);
-
-        private string GetControllerName() => this.GetType().Name.Replace(nameof(Controller), string.Empty);
+            => new ViewResult(this.Response, viewName, this.GetType().GetControllerName(), model);
     }
 }

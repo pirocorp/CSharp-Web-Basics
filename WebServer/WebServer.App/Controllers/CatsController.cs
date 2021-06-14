@@ -11,9 +11,9 @@
         {
         }
 
-        public ActionResult Create() => this.View();
+        public HttpResponse Create() => this.View();
 
-        public ActionResult Save()
+        public HttpResponse Save()
         {
             var name = this.Request.Form["Name"];
             var age = this.Request.Form["Age"];
