@@ -9,32 +9,43 @@
     {
         public const string UserSessionKey = "AuthenticatedUserId";
 
-        protected Controller(HttpRequest request)
-        {
-            this.Request = request;
+        private UserIdentity userIdentity;
 
+        protected Controller()
+        {
             this.Response = new HttpResponse(HttpStatusCode.OK);
-            this.User = this.Request.Session.ContainsKey(UserSessionKey)
-                ? new UserIdentity() { Id = this.Request.Session[UserSessionKey] }
-                : new UserIdentity();
         }
 
-        protected HttpRequest Request { get; private init; }
+        protected HttpRequest Request { get; init; }
 
         protected HttpResponse Response { get; private init; }
 
-        protected UserIdentity User { get; private set; }
+        // Lazy loading
+        protected UserIdentity User
+        {
+            get
+            {
+                if (this.userIdentity is null)
+                {
+                    this.userIdentity = this.Request.Session.ContainsKey(UserSessionKey)
+                        ? new UserIdentity() { Id = this.Request.Session[UserSessionKey] }
+                        : new UserIdentity();
+                }
+
+                return this.userIdentity;
+            }
+        }
 
         protected void SignIn(string userId)
         {
             this.Request.Session[UserSessionKey] = userId;
-            this.User = new UserIdentity() { Id = userId };
+            this.userIdentity = new UserIdentity() { Id = userId };
         }
 
         protected void SignOut()
         {
             this.Request.Session.Remove(UserSessionKey);
-            this.User = new UserIdentity();
+            this.userIdentity = new UserIdentity();
         }
 
         protected ActionResult Text(string text)

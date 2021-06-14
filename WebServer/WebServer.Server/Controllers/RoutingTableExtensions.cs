@@ -92,8 +92,16 @@
             return ResponseFunction;
         }
 
-        private static object CreateController(Type controller, HttpRequest request)
-            => Activator.CreateInstance(controller, request);
+        private static object CreateController(Type controllerType, HttpRequest request)
+        {
+            var controller = (Controller)Activator.CreateInstance(controllerType);
+
+            controllerType
+                .GetProperty("Request", BindingFlags.Instance | BindingFlags.NonPublic)
+                .SetValue(controller, request, null);
+
+            return controller;
+        }
 
         private static TController CreateController<TController>(HttpRequest request)
             => (TController)CreateController(typeof(TController), request);
@@ -174,7 +182,7 @@
                     {
                         var value = request.GetValue(property.Name);
 
-                        property.SetValue(instance, value);
+                        property.SetValue(instance, Convert.ChangeType(value, property.PropertyType));
                     }
 
                     parametersValues[i] = instance;
