@@ -10,6 +10,7 @@
     public static class RoutingTableExtensions
     {
         private static readonly Type httpResponseType = typeof(HttpResponse);
+        private static readonly Type stringType = typeof(string);
 
         public static IRoutingTable MapGet<TController>(
             this IRoutingTable routingTable,
@@ -83,7 +84,9 @@
 
                 var controllerInstance = CreateController(controllerType, request);
 
-                return (HttpResponse)controllerAction.Invoke(controllerInstance, Array.Empty<object>());
+                var parametersValues = GetParametersValues(controllerAction, request);
+
+                return (HttpResponse)controllerAction.Invoke(controllerInstance, parametersValues);
             }
 
             return ResponseFunction;
@@ -134,6 +137,42 @@
             }
 
             return true;
+        }
+
+        private static object[] GetParametersValues(MethodInfo controllerAction, HttpRequest request)
+        {
+            var actionParameters = controllerAction
+                .GetParameters()
+                .Select(p => new
+                {
+                    Name = p.Name,
+                    Type = p.ParameterType
+                })
+                .ToArray();
+
+            var parametersValues = new object[actionParameters.Length];
+
+            for (var i = 0; i < actionParameters.Length; i++)
+            {
+                var parameter = actionParameters[i];
+                var parameterName = actionParameters[i].Name;
+                var parameterType = parameter.Type;
+
+                var parameterValue =
+                    request.Query.GetValueOrDefault(parameterName)
+                    ?? request.Form.GetValueOrDefault(parameterName);
+
+                if (parameterType == stringType)
+                {
+                    parametersValues[i] = parameterValue;
+                }
+                else
+                {
+                    parametersValues[i] = Convert.ChangeType(parameterValue, parameterType);
+                }
+            }
+
+            return parametersValues;
         }
     }
 }
