@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
     using Common;
 
@@ -24,7 +25,9 @@
 
         public IDictionary<string, HttpCookie> Cookies { get; }
 
-        public string Content { get; protected set; }
+        public byte[] Content { get; protected set; }
+
+        public bool HasContent => this.Content != null && this.Content.Any();
 
         public static HttpResponse ErrorResponse(string message)
             => new HttpResponse(HttpStatusCode.InternalServerError)
@@ -39,6 +42,19 @@
 
             this.AddHeader(HttpHeader.ContentType, contentType);
             this.AddHeader(HttpHeader.ContentLength, contentLength);
+
+            this.Content = Encoding.UTF8.GetBytes(content);
+
+            return this;
+        }
+
+        public HttpResponse SetContent(byte[] content, string contentType)
+        {
+            Guard.AgainstNull(content, nameof(content));
+            Guard.AgainstNull(contentType, nameof(contentType));
+
+            this.AddHeader(HttpHeader.ContentType, contentType);
+            this.AddHeader(HttpHeader.ContentLength, content.Length.ToString());
 
             this.Content = content;
 
@@ -78,10 +94,9 @@
             }
 
             // will not work on linux
-            if (!string.IsNullOrEmpty(this.Content))
+            if (this.HasContent)
             {
                 result.AppendLine();
-                result.Append(this.Content);
             }
 
             return result.ToString();
