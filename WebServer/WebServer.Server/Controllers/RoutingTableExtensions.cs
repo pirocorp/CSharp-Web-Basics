@@ -76,12 +76,12 @@
         {
             HttpResponse ResponseFunction(HttpRequest request)
             {
-                var controllerInstance = CreateController(controllerType, request);
-
-                if (controllerAction.ReturnType != httpResponseType)
+                if (!IsAuthorized(controllerAction, request.Session))
                 {
-                    throw new InvalidOperationException($"Controller action '{path}' does not return a HttpResponse object");
+                    return new HttpResponse(HttpStatusCode.Unauthorized);
                 }
+
+                var controllerInstance = CreateController(controllerType, request);
 
                 return (HttpResponse)controllerAction.Invoke(controllerInstance, Array.Empty<object>());
             }
@@ -114,6 +114,26 @@
                     routingTable.Map(method, "/", responseFunction);
                 }
             }
+        }
+
+        private static bool IsAuthorized(MethodInfo controllerAction, HttpSession session)
+        {
+            var authorizationAttribute = controllerAction.DeclaringType
+                ?.GetCustomAttribute<AuthorizeAttribute>()
+                ?? controllerAction.GetCustomAttribute<AuthorizeAttribute>();
+
+            if (authorizationAttribute != null)
+            {
+                var userIsAuthorized = session.ContainsKey(Controller.UserSessionKey)
+                    && session[Controller.UserSessionKey] != null;
+
+                if (!userIsAuthorized)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

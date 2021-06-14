@@ -79,5 +79,11 @@
             this.Request.Session[currentDateKey] = DateTime.UtcNow.ToString();
             return this.Text($"Current date stored!");
         }
+
+        [Authorize]
+        public HttpResponse AuthorizationCheck()
+        {
+            return this.Text($"Current user: {this.User.Id}");
+        }
     }
 }
