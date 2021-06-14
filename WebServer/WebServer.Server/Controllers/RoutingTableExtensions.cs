@@ -9,7 +9,7 @@
 
     public static class RoutingTableExtensions
     {
-        private static Type httpResponseType = typeof(HttpResponse);
+        private static readonly Type httpResponseType = typeof(HttpResponse);
 
         public static IRoutingTable MapGet<TController>(
             this IRoutingTable routingTable,
@@ -51,7 +51,7 @@
 
                 routingTable.Map(httpMethod, path, responseFunction);
 
-                MapDefaultRoutes(routingTable, controllerName, actionName, responseFunction);
+                MapDefaultRoutes(routingTable, httpMethod, controllerName, actionName, responseFunction);
             }
 
             return routingTable;
@@ -97,6 +97,7 @@
 
         private static void MapDefaultRoutes(
             IRoutingTable routingTable,
+            HttpMethod method,
             string controllerName,
             string actionName,
             Func<HttpRequest, HttpResponse> responseFunction)
@@ -106,11 +107,11 @@
 
             if (actionName == defaultActionName)
             {
-                routingTable.MapGet($"{controllerName}", responseFunction);
+                routingTable.Map(method, $"{controllerName}", responseFunction);
 
                 if (controllerName == defaultControllerName)
                 {
-                    routingTable.MapGet("/", responseFunction);
+                    routingTable.Map(method, "/", responseFunction);
                 }
             }
         }
