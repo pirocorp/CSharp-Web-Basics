@@ -158,21 +158,34 @@
                 var parameterName = actionParameters[i].Name;
                 var parameterType = parameter.Type;
 
-                var parameterValue =
-                    request.Query.GetValueOrDefault(parameterName)
-                    ?? request.Form.GetValueOrDefault(parameterName);
-
-                if (parameterType == stringType)
+                if (parameterType.IsPrimitive || parameterType == stringType)
                 {
-                    parametersValues[i] = parameterValue;
+                    var parameterValue = request.GetValue(parameterName);
+
+                    parametersValues[i] = Convert.ChangeType(parameterValue, parameterType);
                 }
                 else
                 {
-                    parametersValues[i] = Convert.ChangeType(parameterValue, parameterType);
+                    var instance = Activator.CreateInstance(parameterType);
+
+                    var parameterProperties = parameterType.GetProperties();
+
+                    foreach (var property in parameterProperties)
+                    {
+                        var value = request.GetValue(property.Name);
+
+                        property.SetValue(instance, value);
+                    }
+
+                    parametersValues[i] = instance;
                 }
             }
 
             return parametersValues;
         }
+
+        private static string GetValue(this HttpRequest request, string name)
+            => request.Query.GetValueOrDefault(name)
+               ?? request.Form.GetValueOrDefault(name);
     }
 }
