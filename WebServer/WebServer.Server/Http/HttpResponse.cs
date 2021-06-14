@@ -12,8 +12,8 @@
         {
             this.StatusCode = statusCode;
 
-            this.Headers = new Dictionary<string, HttpHeader>();
-            this.Cookies = new Dictionary<string, HttpCookie>();
+            this.Headers = new Dictionary<string, HttpHeader>(StringComparer.InvariantCultureIgnoreCase);
+            this.Cookies = new Dictionary<string, HttpCookie>(StringComparer.InvariantCultureIgnoreCase);
 
             this.AddHeader(HttpHeader.Server, "The Bad Server");
             this.AddHeader(HttpHeader.Date, DateTime.UtcNow.ToString("R"));

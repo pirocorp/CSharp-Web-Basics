@@ -2,7 +2,6 @@
 {
     using Server.Controllers;
     using Server.Http;
-    using Server.Results;
 
     public class CatsController : Controller
     {

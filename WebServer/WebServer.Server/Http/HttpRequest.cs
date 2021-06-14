@@ -72,7 +72,7 @@
 
         private static Dictionary<string, HttpHeader> ParseHeaders(IEnumerable<string> headerLines)
         {
-            var headersCollection = new Dictionary<string, HttpHeader>();
+            var headersCollection = new Dictionary<string, HttpHeader>(StringComparer.InvariantCultureIgnoreCase);
 
             foreach (var headerLine in headerLines)
             {
@@ -101,7 +101,7 @@
 
         private static IReadOnlyDictionary<string, HttpCookie> ParseCookies(Dictionary<string, HttpHeader> headers)
         {
-            var cookieCollection = new Dictionary<string, HttpCookie>();
+            var cookieCollection = new Dictionary<string, HttpCookie>(StringComparer.InvariantCultureIgnoreCase);
 
             if (!headers.ContainsKey(HttpHeader.Cookie))
             {
@@ -128,7 +128,7 @@
                 .Split("&")
                 .Select(p => p.Split("="))
                 .Where(part => part.Length == 2)
-                .ToDictionary(p => p[0], p => p[1]);
+                .ToDictionary(p => p[0], p => p[1], StringComparer.InvariantCultureIgnoreCase);
 
         private static (string Path, Dictionary<string,string> Query) ParseUrl(string url)
         {
@@ -137,7 +137,7 @@
             var path = urlParts[0].ToLower();
             var query = urlParts.Length > 1
                 ? ParseQuery(urlParts[1])
-                : new Dictionary<string, string>();
+                : new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
 
             return (path, query);
         }
@@ -161,7 +161,7 @@
 
         private static Dictionary<string, string> ParseForm(Dictionary<string, HttpHeader> headers, string body)
         {
-            var result = new Dictionary<string, string>();
+            var result = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
 
             if (headers.ContainsKey(HttpHeader.ContentType)
                 && headers[HttpHeader.ContentType].Value == HttpContentType.FormUrlEncoded)

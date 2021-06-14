@@ -3,7 +3,6 @@
     using Models.Animals;
     using Server.Controllers;
     using Server.Http;
-    using Server.Results;
 
     public class AnimalsController : Controller
     {
@@ -36,7 +35,7 @@
             return this.View(model);
         }
 
-        public HttpResponse Dogs() => this.View();
+        public HttpResponse Dogs() => this.View(new{ Name = "Sharo", Breed = "Street Perfect", Age = "5" });
 
         public HttpResponse Bunnies() => this.View("Rabbits");
 

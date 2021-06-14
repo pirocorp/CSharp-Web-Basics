@@ -1,7 +1,5 @@
 ﻿namespace WebServer.Server.Http
 {
-    using System;
-
     public class HttpContentType
     {
         public static readonly string PlainText = $"text/plain; {UTF8Charset}";
