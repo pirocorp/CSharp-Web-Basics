@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Web;
     using Collections;
+    using Services;
 
     public class HttpRequest
     {
@@ -33,7 +34,9 @@
 
         public HttpSession Session { get; private set; }
 
-        public static HttpRequest Parse(string request)
+        public IServiceCollection Services { get; private set; }
+
+        public static HttpRequest Parse(string request, IServiceCollection services)
         {
             var lines = request.Split(NewLine);
 
@@ -69,6 +72,7 @@
                 Session = session,
                 Body = body,
                 Form = form,
+                Services = services,
             };
         }
 
