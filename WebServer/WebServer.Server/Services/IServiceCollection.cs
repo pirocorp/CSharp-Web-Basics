@@ -4,6 +4,9 @@
 
     public interface IServiceCollection
     {
+        public IServiceCollection Add<TService>()
+            where TService : class;
+
         IServiceCollection Add<TService, TImplementation>()
             where TService : class
             where TImplementation : class, TService;

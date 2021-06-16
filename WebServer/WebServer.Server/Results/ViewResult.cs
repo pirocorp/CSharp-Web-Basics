@@ -1,7 +1,10 @@
 ﻿namespace WebServer.Server.Results
 {
+    using System;
+    using System.Collections;
     using System.IO;
     using System.Linq;
+    using System.Text;
     using Http;
 
     public class ViewResult : ActionResult
@@ -31,11 +34,6 @@
 
             var viewContent = File.ReadAllText(viewPath);
 
-            if (model != null)
-            {
-                viewContent = this.PopulateModel(viewContent, model);
-            }
-
             var layoutPath = Path.GetFullPath($"./Views/Layout.cshtml");
 
             if (File.Exists(layoutPath))
@@ -43,6 +41,11 @@
                 var layoutContent = File.ReadAllText(layoutPath);
 
                 viewContent = layoutContent.Replace("@RenderBody()", viewContent);
+            }
+
+            if (model != null)
+            {
+                viewContent = PopulateModel(viewContent, model);
             }
 
             this.SetContent(viewContent, HttpContentType.Html);
@@ -57,7 +60,81 @@
             this.SetContent(errorMessage, HttpContentType.PlainText);
         }
 
-        private string PopulateModel(string viewContent, object model)
+        private static string PopulateModel(string viewContent, object model)
+        {
+            if (model is not IEnumerable)
+            {
+                viewContent = PopulateModelProperties(viewContent, "Model", model);
+            }
+
+            var result = new StringBuilder();
+            var lines = viewContent
+                .Split(Environment.NewLine)
+                .Select(l => l.Trim());
+
+            var inLoop = false;
+            string loopModelName = null;
+            StringBuilder loopContent = null;
+
+            foreach (var line in lines)
+            {
+                if (line.StartsWith("@foreach"))
+                {
+                    if (model is not IEnumerable)
+                    {
+                        throw new InvalidOperationException("Model is not collection.");
+                    }
+
+                    inLoop = true;
+
+                    loopModelName = line
+                        .Split(" ")
+                        .SkipWhile(l => l.Contains("var"))
+                        .Skip(2)
+                        .FirstOrDefault();
+
+                    if (loopModelName is null)
+                    {
+                        throw new InvalidOperationException("Invalid statement");
+                    }
+
+                    continue;
+                }
+
+                if (inLoop)
+                {
+                    if (line.StartsWith("{"))
+                    {
+                        loopContent = new StringBuilder();
+                    }
+                    else if (line.StartsWith("}"))
+                    {
+                        var loopTemplate = loopContent.ToString();
+
+                        foreach (var item in (IEnumerable)model)
+                        {
+                            var loopResult = PopulateModelProperties(loopTemplate, loopModelName, item);
+
+                            result.AppendLine(loopResult);
+                        }
+
+                        inLoop = false;
+                    }
+                    else
+                    {
+                        loopContent.AppendLine(line);
+                    }
+
+                    continue;
+                }
+
+                result.AppendLine(line);
+            }
+
+            return result.ToString();
+        }
+
+        private static string PopulateModelProperties(string content, string modelName, object model)
         {
             var data = model
                 .GetType()
@@ -70,10 +147,10 @@
 
             foreach (var entry in data)
             {
-                viewContent = viewContent.Replace($"@Model.{entry.Name}", entry.Value.ToString());
+                content = content.Replace($"@{modelName}.{entry.Name}", entry.Value.ToString());
             }
 
-            return viewContent;
+            return content;
         }
     }
 }
