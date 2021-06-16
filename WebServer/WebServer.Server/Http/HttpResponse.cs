@@ -1,9 +1,9 @@
 ﻿namespace WebServer.Server.Http
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using Collections;
     using Common;
 
     public class HttpResponse
@@ -12,18 +12,18 @@
         {
             this.StatusCode = statusCode;
 
-            this.Headers = new Dictionary<string, HttpHeader>(StringComparer.InvariantCultureIgnoreCase);
-            this.Cookies = new Dictionary<string, HttpCookie>(StringComparer.InvariantCultureIgnoreCase);
+            this.Headers = new HeaderCollection();
+            this.Cookies = new CookieCollection();
 
-            this.AddHeader(HttpHeader.Server, "The Bad Server");
-            this.AddHeader(HttpHeader.Date, DateTime.UtcNow.ToString("R"));
+            this.Headers.Add(HttpHeader.Server, "The Bad Server");
+            this.Headers.Add(HttpHeader.Date, DateTime.UtcNow.ToString("R"));
         }
 
         public HttpStatusCode StatusCode { get; protected set; }
 
-        public IDictionary<string, HttpHeader> Headers { get; }
+        public HeaderCollection Headers { get; }
 
-        public IDictionary<string, HttpCookie> Cookies { get; }
+        public CookieCollection Cookies { get; }
 
         public byte[] Content { get; protected set; }
 
@@ -40,8 +40,8 @@
 
             var contentLength = Encoding.UTF8.GetByteCount(content).ToString();
 
-            this.AddHeader(HttpHeader.ContentType, contentType);
-            this.AddHeader(HttpHeader.ContentLength, contentLength);
+            this.Headers.Add(HttpHeader.ContentType, contentType);
+            this.Headers.Add(HttpHeader.ContentLength, contentLength);
 
             this.Content = Encoding.UTF8.GetBytes(content);
 
@@ -53,28 +53,12 @@
             Guard.AgainstNull(content, nameof(content));
             Guard.AgainstNull(contentType, nameof(contentType));
 
-            this.AddHeader(HttpHeader.ContentType, contentType);
-            this.AddHeader(HttpHeader.ContentLength, content.Length.ToString());
+            this.Headers.Add(HttpHeader.ContentType, contentType);
+            this.Headers.Add(HttpHeader.ContentLength, content.Length.ToString());
 
             this.Content = content;
 
             return this;
-        }
-
-        public void AddHeader(string name, string value)
-        {
-            Guard.AgainstNull(name, nameof(name));
-            Guard.AgainstNull(value, nameof(value));
-
-            this.Headers[name] = new HttpHeader(name, value);
-        }
-
-        public void AddCookie(string name, string value)
-        {
-            Guard.AgainstNull(name, nameof(name));
-            Guard.AgainstNull(value, nameof(value));
-
-            this.Cookies[name] = new HttpCookie(name, value);
         }
 
         public override string ToString()
@@ -83,17 +67,16 @@
 
             result.AppendLine($"HTTP/1.1 {(int)this.StatusCode} {this.StatusCode}");
 
-            foreach (var header in this.Headers.Values)
+            foreach (var header in this.Headers)
             {
                 result.AppendLine(header.ToString());
             }
 
-            foreach (var cookie in this.Cookies.Values)
+            foreach (var cookie in this.Cookies)
             {
                 result.AppendLine($"{HttpHeader.SetCookie}: {cookie}");
             }
 
-            // will not work on linux
             if (this.HasContent)
             {
                 result.AppendLine();

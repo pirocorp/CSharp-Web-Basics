@@ -53,8 +53,8 @@
                 return this.Text($"Hello with cookie! - {cookie}");
             }
 
-            this.Response.AddCookie(cookieName, "My-Value");
-            this.Response.AddCookie("My-Second-Cookie", "My-Second-Value");
+            this.Response.Cookies.Add(cookieName, "My-Value");
+            this.Response.Cookies.Add("My-Second-Cookie", "My-Second-Value");
 
             return this.Text("Cookies set!");
         }
