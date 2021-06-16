@@ -46,7 +46,7 @@
         {
             const string cookieName = "My-Cookie";
 
-            if (this.Request.Cookies.ContainsKey(cookieName))
+            if (this.Request.Cookies.Contains(cookieName))
             {
                 var cookie = this.Request.Cookies[cookieName];
 
