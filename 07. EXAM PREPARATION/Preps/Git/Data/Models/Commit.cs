@@ -9,6 +9,7 @@
     {
         public Commit()
         {
+            this.Id = Guid.NewGuid().ToString();
             this.CreateOn = DateTime.UtcNow;
         }
 

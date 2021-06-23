@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
+
+    using Models.Repositories;
     using Models.Users;
 
     using static Data.DataConstants;
@@ -30,6 +32,23 @@
             if (!Regex.IsMatch(model.Email, UserEmailRegularExpression))
             {
                 errors.Add($"Email {model.Email} is not valid email.");
+            }
+
+            return errors;
+        }
+
+        public ICollection<string> ValidateRepository(RepositoryCreateFormModel model)
+        {
+            var errors = new List<string>();
+
+            if (model.Name.Length is < RepositoryMinName or > RepositoryMaxName)
+            {
+                errors.Add($"Repository name '{model.Name}' must be between {RepositoryMinName} and {RepositoryMaxName} characters long.");
+            }
+
+            if (model.RepositoryType != RepositoryPublicType && model.RepositoryType != RepositoryPrivateType)
+            {
+                errors.Add($"Invalid repository type ({RepositoryPublicType}, {RepositoryPrivateType}).");
             }
 
             return errors;

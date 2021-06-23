@@ -10,6 +10,7 @@
     {
         public Repository()
         {
+            this.Id = Guid.NewGuid().ToString();
             this.CreateOn = DateTime.UtcNow;
             this.Commits = new List<Commit>();
         }
