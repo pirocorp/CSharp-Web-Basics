@@ -1,9 +1,16 @@
 ﻿namespace Git.Data
 {
     using Microsoft.EntityFrameworkCore;
+    using Models;
 
     public class GitDbContext : DbContext
     {
+        public DbSet<User> Users { get; init; }
+
+        public DbSet<Repository> Repositories { get; set; }
+
+        public DbSet<Commit> Commits { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
