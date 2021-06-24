@@ -22,7 +22,9 @@
                     .Add<BattleDbContext>()
                     .Add<IValidator, Validator>()
                     .Add<IPasswordHasher, PasswordHasher>()
-                    .Add<IViewEngine, CompilationViewEngine>())
+                    .Add<IViewEngine, CompilationViewEngine>()
+                    .Add<IUserService, UserService>()
+                    .Add<ICardsService, CardsService>())
                 .WithConfiguration<BattleDbContext>(context => context.Database.Migrate())
                 .Start();
     }

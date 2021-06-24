@@ -22,14 +22,13 @@
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserCard>()
-                .HasOne<User>()
-                .WithMany(u => u.Cards)
-                .HasForeignKey(uc => uc.UserId);
+                .HasKey(k => new { k.UserId, k.CardId });
 
             modelBuilder.Entity<UserCard>()
-                .HasOne<Card>()
-                .WithMany(c => c.Users)
-                .HasForeignKey(uc => uc.CardId);
+                .HasIndex(uc => uc.CardId);
+
+            modelBuilder.Entity<UserCard>()
+                .HasIndex(uc => uc.UserId);
         }
     }
 }

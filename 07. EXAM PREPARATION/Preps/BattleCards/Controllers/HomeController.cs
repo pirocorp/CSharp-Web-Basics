@@ -5,6 +5,14 @@
 
     public class HomeController : Controller
     { 
-        public HttpResponse Index() => this.View();
+        public HttpResponse Index()
+        {
+            if (this.User.IsAuthenticated)
+            {
+                return this.Redirect("/Cards/All");
+            }
+
+            return this.View();
+        }
     }
 }

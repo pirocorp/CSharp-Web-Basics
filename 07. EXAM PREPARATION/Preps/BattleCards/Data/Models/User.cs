@@ -27,9 +27,8 @@
         public string Email { get; set; }
 
         [Required]
-        [StringLength(UserMaxPassword, MinimumLength = UserMinPassword)]
         public string Password { get; set; }
 
-        public IEnumerable<UserCard> Cards { get; init; }
+        public IEnumerable<UserCard> Cards { get; set; }
     }
 }

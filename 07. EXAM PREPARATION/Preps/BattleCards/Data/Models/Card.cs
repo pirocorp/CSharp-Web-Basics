@@ -38,6 +38,6 @@
         [StringLength(CardMaxDescription)]
         public string Description { get; set; }
 
-        public IEnumerable<UserCard> Users { get; init; }
+        public IEnumerable<UserCard> Users { get; set; }
     }
 }
