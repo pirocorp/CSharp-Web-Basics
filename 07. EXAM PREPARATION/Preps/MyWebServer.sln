@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyWebServer", "MyWebServer\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarShop", "CarShop\CarShop.csproj", "{9F2DA850-81B5-4C3C-8938-108D593EFAA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Git", "Git\Git.csproj", "{F6C49C4E-106D-4B18-8F89-71787D9FFAA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Git", "Git\Git.csproj", "{F6C49C4E-106D-4B18-8F89-71787D9FFAA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleCards", "BattleCards\BattleCards.csproj", "{1D77A96D-356E-435A-A62E-AED3F8F8D5E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{F6C49C4E-106D-4B18-8F89-71787D9FFAA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6C49C4E-106D-4B18-8F89-71787D9FFAA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6C49C4E-106D-4B18-8F89-71787D9FFAA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D77A96D-356E-435A-A62E-AED3F8F8D5E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D77A96D-356E-435A-A62E-AED3F8F8D5E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D77A96D-356E-435A-A62E-AED3F8F8D5E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D77A96D-356E-435A-A62E-AED3F8F8D5E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
