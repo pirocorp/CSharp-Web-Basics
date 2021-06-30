@@ -1,0 +1,12 @@
+﻿<div style="margin-top: 80px;">
+    <div>
+        Your request is not valid. Errors:
+    </div>
+
+    <ul>
+        @foreach (var error in Model)
+        {
+            <li>@error</li>
+        }
+    </ul>
+</div>
